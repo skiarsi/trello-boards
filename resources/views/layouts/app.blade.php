@@ -10,7 +10,7 @@
 
         @livewireStyles
     </head>
-    <body>
+    <body class="h-full">
         {{ $slot }}
 
         @livewireScripts
