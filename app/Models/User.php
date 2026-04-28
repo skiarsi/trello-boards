@@ -29,4 +29,16 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // relations
+    public function boards()
+    {
+        return $this->belongsToMany(Board::class)
+            ->withPivot('role')
+            ->withTimestamps();
+    }
+
+    public function speedboard(){
+        return $this->hasMany(Speeddial::class);
+    }
 }

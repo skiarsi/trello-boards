@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GoogleController;
+use App\Livewire\Pages\Boardpage;
 use App\Livewire\Pages\Home;
 use Illuminate\Support\Facades\Route;
 
@@ -12,4 +13,9 @@ Route::middleware(['guest'])->group(function(){
 
 Route::middleware(['auth'])->group(function(){
     Route::get('/', Home::class)->name('index');
+
+    // boards
+    Route::prefix('board')->group(function(){
+        Route::get('/{board:slug}', Boardpage::class)->name('board');
+    });
 });

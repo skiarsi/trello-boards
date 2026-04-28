@@ -1,4 +1,3 @@
-@import "./theme.css"; /* By Sheaf.dev */
 @import "tailwindcss";
 /* @plugin "daisyui"; */
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
