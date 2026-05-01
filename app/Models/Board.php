@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Board extends Model
 {
@@ -29,5 +30,14 @@ class Board extends Model
     public function lists()
     {
         return $this->hasMany(Boardlist::class);
+    }
+
+
+    // helper
+    public function currentUserRole(){
+        return $this->users()
+                    ->where('user_id', Auth::id())
+                    ->first()
+                    ?->pivot->role;
     }
 }

@@ -5,6 +5,9 @@ use Livewire\Component;
 new class extends Component
 {
     public $board;
+
+    // auth user role in this board
+    public $userRole;
 };
 ?>
 
@@ -28,15 +31,21 @@ new class extends Component
         x-show="open"
         @click.outside="open = !open">
 
-        <span class="block py-1 ps-1 text-sm text-gray-900 hover:text-gray-700 cursor-pointer">Add new list</span>
-        <span class="block py-1 ps-1 text-sm text-gray-900 hover:text-gray-700 cursor-pointer">Share board</span>
+        @if ($userRole !== 'viewer')
+            <span class="block py-1 ps-1 text-sm text-gray-900 hover:text-gray-700 cursor-pointer">Add new list</span>
+            <span class="block py-1 ps-1 text-sm text-gray-900 hover:text-gray-700 cursor-pointer">Share board</span>
 
-        <div class="w-full px-1 pt-1 flex flex-col">
-            <span class="block py-1 text-sm text-gray-900">change color</span>
+            <div class="w-full px-1 py-1 flex flex-col">
+                <span class="block py-1 text-sm text-gray-900">change color</span>
 
-            {{-- change color --}}
-            <livewire:board.setting.changecolor :board="$board" />
-        </div>
+                {{-- change color --}}
+                <livewire:board.setting.changecolor :board="$board" />
+            </div>
+            <span class="block py-1 ps-1 text-sm text-gray-900 hover:text-gray-700 cursor-pointer">Add label</span>
+        @else
+            <span class="block py-1 ps-1 text-sm text-gray-900 hover:text-gray-700 cursor-pointer">Add label</span>
+        @endif
+
 
     </div>
 </div>
