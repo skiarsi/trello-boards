@@ -1,0 +1,26 @@
+<?php
+
+use Livewire\Component;
+use Livewire\Attributes\On;
+
+
+new class extends Component
+{
+    public $board;
+    public $boardlists;
+
+    #[On('board-updated')]
+    public function mount(){
+
+    }
+};
+?>
+
+<div
+    style="background-color:{{ $board->color }}"
+    class="w-full h-full py-3 px-3 flex justify-start items-start"
+    >
+    @foreach ($this->boardlists as $list)
+        <livewire:lists.main :list="$list" />
+    @endforeach
+</div>

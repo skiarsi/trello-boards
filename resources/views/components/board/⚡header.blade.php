@@ -45,11 +45,14 @@ new class extends Component
             if (this.editing) {
                 let newValue = $refs.InputBoardTitle.value;
                 if (newValue !== this.initialValue) {
-                    // ابتدا متد سرور اجرا می‌شود
+
+                    // first update name on livewire
                     $wire.updateBoardTitle().then(() => {
-                        // پس از اتمام موفقیت‌آمیز در سرور، عنوان صفحه را عوض کن
+
+                        // change title after name is change on server
                         document.title = newValue;
                         this.editing = false;
+
                     });
                 } else {
                     this.editing = false;
@@ -77,4 +80,6 @@ new class extends Component
             @keydown.escape="editing = false; boardTitle = initialValue"
             class="py-0.5 px-2 bg-white text-black rounded-none outline-0" />
     </div>
+
+    <livewire:board.settingmenu :board="$board" />
 </div>
