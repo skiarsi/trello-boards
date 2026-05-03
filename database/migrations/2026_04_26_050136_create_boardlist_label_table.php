@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('boardlist_label', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('board_list_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('boardlist_id')->constrained()->cascadeOnDelete();
             $table->foreignId('label_id')->constrained()->cascadeOnDelete();
             $table->text('title')->nullable();
 
             $table->timestamps();
 
-            $table->unique(['board_list_id', 'label_id']);
+            $table->unique(['boardlist_id', 'label_id']);
         });
     }
 

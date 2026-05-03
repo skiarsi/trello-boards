@@ -2,6 +2,7 @@
 
 use Livewire\Component;
 use Livewire\Attributes\Modelable;
+use Livewire\Attributes\Computed;
 
 new class extends Component
 {
@@ -10,8 +11,12 @@ new class extends Component
 
     public $board;
 
-    // auth user role in this board
-    public $userRole;
+
+    #[Computed]
+    public function userRole()
+    {
+        return $this->board->currentUserRole();
+    }
 
     // update board title
     public function updateTitle(){
@@ -70,7 +75,7 @@ new class extends Component
     }"
     class="flex items-center"
 >
-    @if ($userRole === 'viewer')
+    @if ($this->userRole === 'viewer')
         <span class="text-white text-lg cursor-default">
             {{ $title }}
         </span>

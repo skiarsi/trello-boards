@@ -1,0 +1,75 @@
+<?php
+
+use Livewire\Component;
+use Livewire\Attributes\Computed;
+
+new class extends Component
+{
+    public $labels;
+    public $board;
+    public $headtitle = '';
+    public $mode = 'minimal';
+
+    #[Computed]
+    public function userRole()
+    {
+        return $this->board->currentUserRole();
+    }
+
+};
+?>
+
+<div class="w-full flex flex-col">
+    @if ($labels && count($labels) > 0)
+        @if($headtitle)
+            <h1 class="text-xl font-bold text-gray-700 mb-2">{{ $headtitle }}</h1>
+        @endif
+
+        @if($mode === 'minimal')
+            {{-- just for view --}}
+            <div class="grid grid-cols-6 gap-1 w-full">
+                @foreach ($labels as $label)
+                    <div
+                        x-data="{ tooltip: false }"
+                        @mouseenter="tooltip = true"
+                        @mouseleave="tooltip = false"
+                        class="w-full h-2 border border-gray-400 relative cursor-default"
+                        style="background-color:{{ $label->color }}">
+
+                        <template x-if="tooltip">
+                            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-1100">
+                                <p class="bg-stone-800 text-white py-1 px-2 rounded text-xs whitespace-nowrap">
+                                    {{ $label->title }}
+                                </p>
+                            </div>
+                        </template>
+                    </div>
+                @endforeach
+            </div>
+
+        {{-- for management --}}
+        @elseif($mode === 'manage')
+            <div class="flex flex-col gap-2 w-full overflow-y-auto max-h-60">
+                @foreach ($labels as $label)
+                    <div class="flex items-center justify-between px-2">
+                        <div class="flex items-center gap-3">
+                            <span class="w-4 h-4 rounded-full border border-black/10"
+                                  style="background-color: {{ $label->color }}"></span>
+                            <span class="text-sm text-gray-800 font-medium">{{ $label->title }}</span>
+                        </div>
+
+                        @if ($this->userRole !== 'viewer')
+                            <button
+                                wire:click="deleteLabel({{ $label->id }})"
+                                wire:confirm="Are you sure you want to delete this label?"
+                                class="text-red-400 hover:text-red-600 transition-colors">
+
+                                <x-heroicon-o-trash class="w-4 h-4" />
+                            </button>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+        @endif
+    @endif
+</div>

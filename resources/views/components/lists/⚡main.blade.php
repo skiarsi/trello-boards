@@ -8,20 +8,27 @@ new class extends Component
 };
 ?>
 
-<div class="w-72 py-1 px-2 flex justify-between" style="background:{{ $list->color }}">
+<div class="w-68 py-1 px-2 flex flex-col" style="background:{{ $list->color }}">
 
-    {{-- list title component --}}
-    <livewire:lists.head.title :title="$list->title" />
-
-
-    <div class="flex gap-3">
-
-        {{-- collapse component --}}
-        <livewire:lists.head.collapse :collapse="$list->collapsed" />
+    <div class="w-full flex justify-between">
+        {{-- list title component --}}
+        <livewire:lists.head.title :title="$list->title" />
 
 
-        {{-- options components --}}
-        <livewire:lists.head.options />
+        <div class="flex gap-3">
+
+            {{-- collapse component --}}
+            <livewire:lists.head.collapse :collapse="$list->collapsed" />
+
+
+            {{-- options components --}}
+            <livewire:lists.head.options />
+
+       </div>
+    </div>
+    <div class="w-full">
+
+        <livewire:cards.allcards :list="$list" />
 
     </div>
 </div>

@@ -9,5 +9,5 @@ new class extends Component
 ?>
 
 <div>
-    <span class="text-lg text-black">{{ $title }}</span>
+    <span class="text-[1rem] text-black">{{ $title }}</span>
 </div>

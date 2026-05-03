@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('slug')->unique();
 
-            $table->foreignId('board_lists_id')
+            $table->foreignId('boardlists_id')
                 ->constrained()
                 ->cascadeOnDelete();
 

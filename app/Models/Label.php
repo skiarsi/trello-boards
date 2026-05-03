@@ -13,4 +13,11 @@ class Label extends Model
                         ->withPivot('title')
                         ->withTimestamps();
     }
+
+    public function boards()
+    {
+        return $this->belongsToMany(Board::class)
+                            ->withPivot('title')
+                            ->withTimestamps();;
+    }
 }

@@ -11,7 +11,7 @@
     <div
         x-show="open"
         @click.outside="open = false"
-        class="fixed top-10 right-6 bg-white shadow p-2 w-60 rounded-sm border border-stone-200/10">
+        class="fixed top-10 right-6 bg-white shadow p-2 w-60 rounded-sm border border-stone-200/10 z-90">
 
         {{-- <ul class="p-0"> --}}
             <form method="post" action="{{ route("logout") }}">

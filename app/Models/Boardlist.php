@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Boardlist extends Model
 {
+
     protected $fillable = ['board_id','title','slug','position','collapsed','color','archived'];
+
+
 
     public function getRouteKeyName(){
         return 'slug';
@@ -17,7 +20,7 @@ class Boardlist extends Model
     }
 
     public function cards(){
-        return $this->hasMany(Card::class, 'board_lists_id');
+        return $this->hasMany(Card::class, 'boardlists_id');
     }
 
     public function labels(){

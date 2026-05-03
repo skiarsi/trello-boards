@@ -1,18 +1,25 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ $title ?? config('app.name') }}</title>
 
-        <title>{{ $title ?? config('app.name') }}</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
+</head>
+<body class="h-screen w-full">
 
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <div class="flex flex-col gap-3 w-full h-screen">
+        <div class="px-2 py-1 w-full">
+            <livewire:topheader.header />
+        </div>
+        <div class="px-2 w-full flex gap-2 items-start h-full max-h-full overflow-hidden">
+            <livewire:leftside.main />
 
-        @livewireStyles
-    </head>
-    <body class="h-full">
-        {{ $slot }}
+            {{ $slot }}
+        </div>
+    </div>
 
-        @livewireScripts
-    </body>
+@livewireScripts
+</body>
 </html>
