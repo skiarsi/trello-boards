@@ -6,14 +6,15 @@ use Livewire\Attributes\Computed;
 new class extends Component
 {
     public $board;
+    public $userRole;
 
     public $title = '';
 
-    #[Computed]
-    public function userRole()
-    {
-        return $this->board->currentUserRole();
-    }
+    // #[Computed]
+    // public function userRole()
+    // {
+    //     return $this->board->currentUserRole();
+    // }
 
 
     public function mount($board){
@@ -26,13 +27,21 @@ new class extends Component
 <div class="bg-gray-800/80 w-full py-2 flex justify-between px-4">
 
     {{-- board title --}}
-    <livewire:board.setting.change-name :board="$board" wire:model="title" />
+    <livewire:board.setting.change-name
+                    :userRole="$userRole"
+                    :board="$board"
+                    wire:model="title" />
 
     <div class="flex gap-2">
 
 
         {{-- add/edit labels --}}
-        <livewire:board.label.labelmodal :board="$board" />
+        <livewire:board.labelmanagement.modal
+                    :board="$board" />
+
+        {{-- <livewire:board.label.labelmodal --}}
+                    {{-- :userRole="$userRole" --}}
+                    {{-- :board="$board" /> --}}
 
 
         {{-- Owner can share board --}}
@@ -43,7 +52,9 @@ new class extends Component
 
 
         {{-- board setting menu --}}
-        <livewire:board.settingmenu :board="$board" />
+        <livewire:board.settingmenu
+                        :userRole="$userRole"
+                        :board="$board" />
 
 
     </div>

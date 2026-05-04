@@ -1,1 +1,1 @@
-<livewire:container.boardslist :board="$board" />
+<livewire:container.boardslist :board="$board" :userRole="$userRole" />

@@ -32,12 +32,16 @@ class Board extends Model
         return $this->hasMany(Boardlist::class);
     }
 
-    public function labels()
-    {
-        return $this->belongsToMany(Label::class)
-                            ->withPivot('title')
-                            ->withTimestamps();;
+    public function labels(){
+        return $this->morphMany(Label::class,'labelabel');
     }
+
+    // public function labels()
+    // {
+    //     return $this->belongsToMany(Label::class)
+    //                         ->withPivot('title','color')
+    //                         ->withTimestamps();;
+    // }
 
 
     // helper

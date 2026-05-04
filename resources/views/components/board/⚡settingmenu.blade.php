@@ -6,13 +6,14 @@ use Livewire\Attributes\Computed;
 new class extends Component
 {
     public $board;
+    public $userRole;
 
 
-    #[Computed]
-    public function userRole()
-    {
-        return $this->board->currentUserRole();
-    }
+    // #[Computed]
+    // public function userRole()
+    // {
+    //     return $this->board->currentUserRole();
+    // }
 
 };
 ?>

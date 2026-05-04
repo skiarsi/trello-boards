@@ -9,14 +9,16 @@ new class extends Component
     #[Modelable]
     public $title;
 
+    public $userRole;
+
     public $board;
 
 
-    #[Computed]
-    public function userRole()
-    {
-        return $this->board->currentUserRole();
-    }
+    // #[Computed]
+    // public function userRole()
+    // {
+    //     return $this->board->currentUserRole();
+    // }
 
     // update board title
     public function updateTitle(){
@@ -35,7 +37,7 @@ new class extends Component
         ]);
 
         // this patch update board name
-        $this->dispatch('board-updated');
+        $this->dispatch('board-updated', boardId: $this->board->id);
     }
 
     public function mount(){

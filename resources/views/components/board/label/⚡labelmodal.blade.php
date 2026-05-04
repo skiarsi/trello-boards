@@ -1,17 +1,14 @@
 <?php
 
 use Livewire\Component;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Computed;
 
 new class extends Component
 {
     public $board;
+    public $userRole;
 
-    #[Computed]
-    public function userRole()
-    {
-        return $this->board->currentUserRole();
-    }
 
 
 
@@ -36,7 +33,8 @@ new class extends Component
         // added to memory
         $this->board->labels->push($newLabel);
 
-        $this->dispatch('board-updated');
+        $this->dispatch('board-updated', boardId: $this->board->id);
+        $this->dispatch('board-new-label');
     }
 };
 ?>
@@ -59,6 +57,14 @@ new class extends Component
                 },
 
                 resetForm() {
+                    {{-- this.open = false; --}}
+                    this.colorform = false;
+                    this.labelTitle = '';
+                    this.chosenColor = '';
+                    this.errorMessage = '';
+                },
+
+                closeModal() {
                     this.open = false;
                     this.colorform = false;
                     this.labelTitle = '';
@@ -86,11 +92,11 @@ new class extends Component
             class="fixed top-0 left-0 w-screen h-screen overflow-hidden bg-stone-700/30 flex justify-center items-center z-1000">
 
             <div
-                @click.outside="resetForm()"
-                class="bg-white w-120 pt-4 pb-4 px-7 rounded-lg grid grid-cols-2 gap-4 shadow-xl">
+                @click.outside="closeModal()"
+                class="bg-white w-120 pt-4 pb-4 px-7 rounded-lg flex gap-4 shadow-xl">
 
 
-                    <div class="flex flex-col gap-4 w-full">
+                    <div class="flex flex-col gap-4 flex-1">
                         <div class="w-full text-xl text-gray-700 text-center select-none font-bold">Add new label</div>
 
                         <div class="w-full flex flex-col gap-2">
@@ -142,21 +148,22 @@ new class extends Component
                         </div>
 
                         <button
-                            @click="resetForm()"
+                            @click="closeModal()"
                             class="text-xs w-[90px] ms-0 me-auto bg-stone-200 text-gray-600 py-2 rounded-lg border border-gray-300 hover:bg-stone-100">
                             Close
                         </button>
                     </div>
-
-                    {{-- label list / edit --}}
-                    <livewire:board.label.labellist
-                            :board="$board"
-                            :labels="$board->labels"
-                            headtitle="Added labels"
-                            mode="manage"  />
+                    @if ($board->labels && count($board->labels) > 0)
+                        {{-- label list / edit --}}
+                        <livewire:board.label.labellist
+                                :board="$board"
+                                :userRole="$userRole"
+                                :labels="$board->labels"
+                                headtitle="Added labels"
+                                mode="manage"  />
+                    @endif
 
             </div>
         </div>
     </div>
-    {{-- {{ $this->board->labels }} --}}
 </div>

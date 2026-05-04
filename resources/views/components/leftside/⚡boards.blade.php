@@ -7,34 +7,50 @@ use \App\Models\Board;
 new class extends Component
 {
     public $userboards = [];
+    public int $refreshKey = 0;
 
     public function mount(){
-        $this->loadBoards();
-        $user = Auth::user();
-        $this->userboards = Board::where('owner_id', $user->id)
-                                ->orWhereHas('users', function($query) use ($user){
-                                    $query->where('user_id', $user->id);
-                                })
-                                ->where('is_archive', false)
-                                ->latest()
-                                ->with(['labels'])
-                                ->get();
+        $this->loadAllBoards();
     }
 
 
     #[On('board-created')]
     #[On('board-updated')]
-    public function loadBoards(){
+    public function loadAllBoards(){
+
+        $this->reset('userboards');
+        $this->refreshKey++;
+
         $user = Auth::user();
-        $this->userboards = Board::where('owner_id', $user->id)
-                                ->orWhereHas('users', function($query) use ($user){
-                                    $query->where('user_id', $user->id);
-                                })
-                                ->where('is_archive', false)
-                                ->latest()
-                                ->with(['labels', 'users'])
-                                ->get();
+
+        $this->userboards = Board::where(function($query) use ($user) {
+                $query->where('owner_id', $user->id)
+                    ->orWhereHas('users', function($q) use ($user) {
+                        $q->where('user_id', $user->id);
+                    });
+            })
+            ->where('is_archive', false)
+            ->latest()
+            ->with(['labels', 'users'])
+            ->get();
     }
+
+
+    // public function updateSingleBoard($boardId){
+
+    //     $updatedBoard = Board::with(['labels', 'users'])->find($boardId);
+
+    //     if ($updatedBoard) {
+    //         // replace updated board with boards in memory
+    //         $this->userboards = $this->userboards->map(function ($board) use ($updatedBoard) {
+    //             if ($board->id === $updatedBoard->id) {
+    //                 return $updatedBoard;
+    //             }
+    //             return $board;
+    //             // return $board->id === $updatedBoard->id ? $updatedBoard : $board;
+    //         });
+    //     }
+    // }
 };
 ?>
 
@@ -44,7 +60,11 @@ new class extends Component
     </div>
 
     @forelse ($userboards as $board)
-        <a href="{{ route("board",$board->slug) }}" wire:navigate class="w-full py-3 px-2 mb-1 rounded flex flex-col items-start cursor-pointer select-none group"
+        <a
+            wire:key="board-item-{{ $board->id }}-{{ $refreshKey }}"
+            href="{{ route("board",$board->slug) }}"
+            wire:navigate
+            class="w-full py-3 px-2 mb-1 rounded flex flex-col items-start cursor-pointer select-none group"
              style="background-color: {{ $board->color }}">
 
             {{-- if board is shared with current user add `shared` label --}}
@@ -54,7 +74,7 @@ new class extends Component
 
             <div class="flex flex-col w-full">
                 <span class="font-medium text-gray-600 group-hover:text-gray-900">{{ $board->title }}</span>
-                <livewire:board.label.labellist :labels="$board->labels" />
+                <livewire:board.labelmanagement.labels :labels="$board->labels" :board="$board" :wire:key="'labellist-'.$board->id.'-'.$refreshKey" />
             </div>
 
 

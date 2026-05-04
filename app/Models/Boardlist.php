@@ -24,10 +24,14 @@ class Boardlist extends Model
     }
 
     public function labels(){
-        return $this->belongsToMany(Label::class)
-                        ->withPivot('title')
-                        ->withTimestamps();
+        return $this->morphMany(Label::class,'labelabel');
     }
+
+    // public function labels(){
+    //     return $this->belongsToMany(Label::class)
+    //                     ->withPivot('title')
+    //                     ->withTimestamps();
+    // }
 
 
 

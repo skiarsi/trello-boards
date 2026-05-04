@@ -35,7 +35,7 @@ new class extends Component
         $this->dispatch('close-dropdown');
 
         // for change board's color
-        $this->dispatch('board-updated');
+        $this->dispatch('board-updated', boardId: $this->board->id);
     }
 };
 ?>

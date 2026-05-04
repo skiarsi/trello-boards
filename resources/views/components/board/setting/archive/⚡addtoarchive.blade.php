@@ -12,7 +12,7 @@ new class extends Component
         $this->board->save();
         $this->board->refresh();
 
-        $this->dispatch("board-updated");
+        $this->dispatch("board-updated", boardId: $this->board->id);
 
         return $this->redirect('/', navigate: true);
     }

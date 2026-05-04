@@ -27,7 +27,7 @@ class Boardpage extends Component
 
         return view('livewire.pages.boardpage',[
             'board' => $this->board,
-            // 'userRole'  => $this->board->currentUserRole()
+            'userRole'  => $this->board->currentUserRole()
         ])->title($this->board->title);
     }
 }

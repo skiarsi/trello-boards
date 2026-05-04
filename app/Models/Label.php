@@ -8,16 +8,20 @@ class Label extends Model
 {
     protected $fillable = ['title','color','description'];
 
-    public function borderlist(){
-        return $this->belongsToMany(BoardList::class)
-                        ->withPivot('title')
-                        ->withTimestamps();
-    }
-
-    public function boards()
+    public function labelable()
     {
-        return $this->belongsToMany(Board::class)
-                            ->withPivot('title')
-                            ->withTimestamps();;
+        return $this->morphTo();
     }
+    // public function borderlist(){
+    //     return $this->belongsToMany(BoardList::class)
+    //                     ->withPivot('title')
+    //                     ->withTimestamps();
+    // }
+
+    // public function boards()
+    // {
+    //     return $this->belongsToMany(Board::class)
+    //                         ->withPivot('title','color')
+    //                         ->withTimestamps();;
+    // }
 }

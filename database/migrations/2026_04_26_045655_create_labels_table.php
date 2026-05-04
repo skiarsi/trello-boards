@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title')->nullable();
             $table->string('color')->default('#eaeaea');
+            $table->morphs('labelabel');
             $table->string('description')->nullable();
             $table->timestamps();
         });
