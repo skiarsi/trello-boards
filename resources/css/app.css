@@ -1,9 +1,11 @@
 @import "tailwindcss";
-/* @plugin "daisyui"; */
+
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
+
+@plugin "daisyui/index.js";
 
 @theme {
     --font-sans:

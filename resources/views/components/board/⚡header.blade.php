@@ -39,10 +39,6 @@ new class extends Component
         <livewire:board.labelmanagement.modal
                     :board="$board" />
 
-        {{-- <livewire:board.label.labelmodal --}}
-                    {{-- :userRole="$userRole" --}}
-                    {{-- :board="$board" /> --}}
-
 
         {{-- Owner can share board --}}
         @if ($this->userRole === "owner")

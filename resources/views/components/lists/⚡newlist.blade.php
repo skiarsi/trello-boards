@@ -14,44 +14,59 @@ new class extends Component
 
 <div
     x-data="{
-                open : false,
-                closeAndClear() {
-                    this.open = false;
-                    $refs.listInput.value = '';
-                }
-            }"
-    @open-newlistform.window="
-                            open = true;
-                            $nextTick(()=> { $refs.listInput.focus() })
-                        "
+        altPressed: false,
+        open: false,
+        closeAndClear() {
+            this.open = false;
+            this.$refs.listInput.value = '';
+        }
+    }"
+    {{-- مدیریت کلید Alt --}}
+    @keydown.window.alt="altPressed = true"
+    @keyup.window.alt="altPressed = false"
+
+    {{-- مدیریت هوشمند کلید L --}}
+    @keydown.window.l="if (altPressed && !['INPUT', 'TEXTAREA'].includes($event.target.tagName)) {
+        $event.preventDefault();
+        open = true;
+        $nextTick(() => $refs.listInput.focus());
+    }"
+
     @keydown.escape.window="closeAndClear()"
-    class="w-68 flex flex-col cursor-pointer select-none">
+    class="w-68 flex flex-col cursor-pointer select-none"
+>
 
-    <x-heroicon-o-plus
-        @click="open = !open; $nextTick(()=> { $refs.listInput.focus() })"
+    {{-- New label button --}}
+    <div
+        @click="open = true; $nextTick(() => $refs.listInput.focus())"
         x-show="!open"
-        class="w-full h-9 text-gray-100 mx-auto bg-black/30 hover:bg-black/50" />
+        class="w-full flex gap-1 bg-black/30 hover:bg-black/50 justify-center">
+        <x-heroicon-o-plus class="w-9 h-9 text-gray-100" />
+        <p class="text-center text-xs pt-2.5 text-gray-100">
+            New <span :class="altPressed ? 'underline font-bold' : ''">L</span>ist
+        </p>
+    </div>
 
+    {{-- Form --}}
     <div
         x-show="open"
-        @click.outside="open = !open"
+        @click.outside="closeAndClear()"
         class="w-full flex flex-col py-1 px-2 bg-black/30">
-            <span class="text-sm text-white pb-1">Create new list</span>
-            <input
-                x-ref="listInput"
-                type="text"
-                class="bg-white py-1 text-lg px-2 border border-gray-400"
-                @keydown.enter="$wire.createnewlist().then(() => closeAndClear())"
-                placeholder="Card name" />
+        <span class="text-sm text-white pb-1">Create new list</span>
+        <input
+            x-ref="listInput"
+            type="text"
+            class="bg-white py-1 text-lg px-2 border border-gray-400 text-black"
+            @keydown.enter="$wire.createnewlist().then(() => closeAndClear())"
+            placeholder="List name..." />
 
-            <div class="flex gap-1 w-full pt-1">
-                <button
-                    @click="$wire.createnewlist().then(() => closeAndClear())"
-                    class="bg-sky-900 text-white disabled:bg-gray-300 text-sm py-0.5 px-3">Create</button>
-                <button
-                    class="bg-gray-300 text-black text-sm py-0.5 px-3"
-                    @click="closeAndClear()"
-                    >Cancel</button>
-            </div>
+        <div class="flex gap-1 w-full pt-1">
+            <button
+                @click="$wire.createnewlist().then(() => closeAndClear())"
+                class="bg-sky-900 text-white text-sm py-0.5 px-3">Create</button>
+            <button
+                @click="closeAndClear()"
+                class="bg-gray-300 text-black text-sm py-0.5 px-3">Cancel</button>
+        </div>
     </div>
 </div>

@@ -42,7 +42,11 @@ new class extends Component
         jslabelColor : '',
         chosenColor(data) {
             this.jslabelColor = data.color;
-            $wire.set('labelcolor', data.color)
+            $wire.set('labelcolor', data.color);
+            this.openForm = true,
+            setTimeout(() => {
+                this.$refs.inputLabel.focus();
+            }, 50);
         },
         resetform() {
             this.openForm = false;
@@ -66,6 +70,7 @@ new class extends Component
             type="text"
             wire:model="labeltext"
             x-ref="inputLabel"
+            placeholder=""
             class="bg-white py-0.5 px-1 text-lg text-black border border-white flex-1" />
 
         <button

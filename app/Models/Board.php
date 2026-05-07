@@ -17,9 +17,21 @@ class Board extends Model
     // relations
     public function users()
     {
-        return $this->belongsToMany(User::class)
-            ->withPivot('role')
+        return $this->belongsToMany(User::class, 'board_user')
+            ->withPivot('status','role')
             ->withTimestamps();
+    }
+
+    // Members
+    public function members()
+    {
+        return $this->users()->wherePivot('status', 'accepted');
+    }
+
+    // Waiting List
+    public function pendingUsers()
+    {
+        return $this->users()->wherePivot('status', 'pending');
     }
 
 
@@ -36,12 +48,7 @@ class Board extends Model
         return $this->morphMany(Label::class,'labelabel');
     }
 
-    // public function labels()
-    // {
-    //     return $this->belongsToMany(Label::class)
-    //                         ->withPivot('title','color')
-    //                         ->withTimestamps();;
-    // }
+
 
 
     // helper

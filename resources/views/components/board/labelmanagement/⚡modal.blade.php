@@ -16,7 +16,7 @@ new class extends Component
 
 <div
     class="relative z-999"
-    x-data="{openModal : true}"
+    x-data="{openModal : false}"
     @open-addlabel.window="openModal = true"
     @resetform.window="openModal=false"
     x-show="openModal"

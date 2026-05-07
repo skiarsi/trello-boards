@@ -21,7 +21,11 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
 
-            // سطح دسترسی
+            // user status
+            $table->enum('status', ['pending', 'accepted', 'declined', 'owner'])
+                    ->default('pending');
+
+            // user role
             $table->enum('role', ['owner', 'editor', 'viewer'])
                 ->default('viewer');
 
