@@ -6,9 +6,12 @@ use App\Models\Board;
 new class extends Component
 {
 
-    public Board $board;
+    public $board;
     public $userRole;
     public $boardlist = [];
+
+
+
 
     public function mount($board){
         $this->board = $board;
@@ -17,9 +20,10 @@ new class extends Component
 };
 ?>
 
-<div class="flex-1 h-full flex flex-col" style="background:{{ $board->color }}">
+<div class="flex-1 h-full flex flex-col">
     <livewire:board.header :board="$board" :userRole="$userRole" />
 
 
     <livewire:board.lists :board="$board" :boardlists="$boardlist" />
+
 </div>

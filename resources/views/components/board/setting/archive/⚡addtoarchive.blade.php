@@ -1,6 +1,7 @@
 <?php
 
 use Livewire\Component;
+use App\Notifications\BoardUpdateNotification;
 
 new class extends Component
 {
@@ -8,11 +9,22 @@ new class extends Component
 
 
     public function archiveBoard(){
+
+        // $this->dispatch("board-updated", boardId: $this->board->id);
+        $this->board->activeUsers()
+                    ->each(function($member){
+                        $member->notify(new BoardUpdateNotification(
+                            board : $this->board,
+                            action : 'archived',
+                            message : 'Board `'.$this->board->title.'` is archived.'
+                        ));
+                    });
+
         $this->board->is_archive = true;
         $this->board->save();
         $this->board->refresh();
 
-        $this->dispatch("board-updated", boardId: $this->board->id);
+
 
         return $this->redirect('/', navigate: true);
     }

@@ -22,7 +22,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             // user status
-            $table->enum('status', ['pending', 'accepted', 'declined', 'owner'])
+            $table->enum('status', ['pending', 'accepted', 'declined', 'removed', 'owner'])
                     ->default('pending');
 
             // user role

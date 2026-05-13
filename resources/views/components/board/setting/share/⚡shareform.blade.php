@@ -3,6 +3,7 @@
 use Livewire\Component;
 use App\Models\User;
 use Livewire\Attributes\On;
+use App\Notifications\BoardInvitationNotification;
 
 new class extends Component
 {
@@ -34,7 +35,9 @@ new class extends Component
         }
 
         // take user ids that are member of board
-        $existingUserIds = $this->board->users()->pluck('users.id')->toArray();
+        $existingUserIds = $this->board->users()
+                                        ->wherePivotIn('status', ['pending', 'accepted', 'owner'])
+                                        ->pluck('users.id')->toArray();
 
         $this->results = User::where(function($query) use ($searchTerm, $isUsernameSearch) {
                 if ($isUsernameSearch) {
@@ -65,6 +68,11 @@ new class extends Component
                 'role' => 'viewer'
             ]
         ]);
+
+
+        // reverb
+        $invitedUser = User::find($userId);
+        $invitedUser->notify(new BoardInvitationNotification($this->board));
 
         $this->search = '';
         $this->results = [];

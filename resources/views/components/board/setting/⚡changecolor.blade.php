@@ -1,6 +1,8 @@
 <?php
 
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
+use App\Notifications\BoardUpdateNotification;
 
 new class extends Component
 {
@@ -26,6 +28,8 @@ new class extends Component
             return;
         }
 
+        $user = Auth::user();
+
         $this->color = $color;
 
         // Update board in DB
@@ -34,8 +38,20 @@ new class extends Component
         // for close menu
         $this->dispatch('close-dropdown');
 
-        // for change board's color
-        $this->dispatch('board-updated', boardId: $this->board->id);
+
+
+        // for change board's color for board owner
+        // $this->dispatch('board-updated', boardId: $this->board->id);
+
+        // get members of board ans send notify them to update board
+        $this->board->activeUsers()
+                    ->each(function($member){
+                        $member->notify(new BoardUpdateNotification(
+                            board : $this->board,
+                            action : 'color_change',
+                            message : 'Board `'.$this->board->title.'` color is changed.'
+                        ));
+                    });
     }
 };
 ?>

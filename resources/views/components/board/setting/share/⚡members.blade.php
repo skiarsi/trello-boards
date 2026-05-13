@@ -2,11 +2,14 @@
 
 use Livewire\Component;
 use Livewire\Attributes\On;
+use App\Models\Board;
 
 new class extends Component
 {
     public $board;
 
+
+    #[On('userlists-updated')]
     #[On('member-updated')]
     public function refreshUsers()
     {
@@ -17,9 +20,7 @@ new class extends Component
 
 <div class="tab-content bg-base-100 py-3">
     @foreach ($this->board->users as $user)
-        @if ($user->pivot->status === "pending")
-
-        @else
+        @if ($user->pivot->status === "accepted" || $user->pivot->status === "owner")
             <div class="flex gap-3 py-1 w-full" wire:key="user-{{ $user->id }}">
                 <div class="w-8 h-8 mt-1.5 rounded-full overflow-hidden flex justify-center items-center align-middle border-2 border-gray-500 bg-stone-200 select-none">
                     {{ mb_strtoupper($user->name[0], "UTF-8") }}
@@ -55,4 +56,11 @@ new class extends Component
             </div>
         @endif
     @endforeach
+
+    {{-- <hr class="my-2 border border-gray-200" />
+
+    <div class="flex gap-2 cursor-pointer select-none " wire:click="$dispatch('userlists-updated')">
+        <x-heroicon-o-arrow-path-rounded-square class="w-6 h-6 mt-0.5 text-gray-700" />
+        <span class=" text-gray-700 py-0.5 pe-2 text-md">refresh users</span>
+    </div> --}}
 </div>

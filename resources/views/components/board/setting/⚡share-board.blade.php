@@ -1,6 +1,7 @@
 <?php
 
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 new class extends Component
 {
@@ -8,15 +9,20 @@ new class extends Component
     public $myModal1 = false;
     public $users=[];
 
-    public function mount(){
+
+    public function loadBoardUsers(){
         $this->users = $this->board->users()->get();
+    }
+
+    public function mount(){
+        $this->loadBoardUsers();
     }
 };
 ?>
 
 <div
     x-data="{
-                open : true,
+                open : false,
                 altPressed : false,
                 closeAndClear() {
                     this.open = false;
@@ -43,7 +49,18 @@ new class extends Component
             @click.outside=" open = !open "
             class="bg-white w-140 pt-4 pb-6 px-7 rounded-lg flex flex-col gap-4">
 
-            <div class="w-full text-xl text-gray-700 select-none">Share `<strong>{{ $this->board->title }}</strong>`</div>
+            <div class="flex justify-between w-full">
+                <div class="w-full text-xl text-gray-700 select-none">Share `<strong>{{ $this->board->title }}</strong>`</div>
+
+                <div
+                    class="flex gap-2 cursor-pointer select-none items-start align-middle text-gray-700 hover:text-gray-900"
+                    wire:click="$dispatch('userlists-updated')">
+                        <x-heroicon-o-arrow-path-rounded-square class="w-5 h-5 mt-0.5" />
+                        <span class=" pt-1 pe-2 text-xs">refresh</span>
+                </div>
+
+            </div>
+
 
             <livewire:board.setting.share.shareform :board="$this->board" />
 

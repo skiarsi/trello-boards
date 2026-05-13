@@ -7,6 +7,7 @@ new class extends Component
 {
     public $board;
 
+    #[On('userlists-updated')]
     #[On('member-updated')]
     public function refreshUsers()
     {
@@ -46,19 +47,17 @@ new class extends Component
                         :board="$board"
                         :user="$user"
                         :wire:key="'update-role-' . $user->id . '-' . $user->pivot->role" />
-                    {{-- <select
-                        class="text-sm border border-gray-300 rounded px-2 py-1 outline-none focus:border-blue-500 disabled:bg-stone-100"
-
-                        @if($user->id === Auth::id() || $user->pivot->role === 'owner') disabled @endif
-                    >
-                        <option value="owner" {{ $user->pivot->role === 'owner' ? 'selected' : '' }}>Owner</option>
-                        <option value="editor" {{ $user->pivot->role === 'editor' ? 'selected' : '' }}>Editor</option>
-                        <option value="viewer" {{ $user->pivot->role === 'viewer' ? 'selected' : '' }}>Viewer</option>
-                    </select> --}}
                 </div>
             </div>
         @else
 
         @endif
     @endforeach
+
+    {{-- <hr class="my-2 border border-gray-200" />
+
+    <div class="flex gap-2 cursor-pointer select-none " wire:click="$dispatch('userlists-updated')">
+        <x-heroicon-o-arrow-path-rounded-square class="w-6 h-6 mt-0.5 text-gray-700" />
+        <span class=" text-gray-700 py-0.5 pe-2 text-md">refresh users</span>
+    </div> --}}
 </div>

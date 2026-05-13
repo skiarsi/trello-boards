@@ -3,6 +3,7 @@
 use Livewire\Component;
 use Livewire\Attributes\Modelable;
 use Livewire\Attributes\Computed;
+use App\Notifications\BoardUpdateNotification;
 
 new class extends Component
 {
@@ -12,13 +13,6 @@ new class extends Component
     public $userRole;
 
     public $board;
-
-
-    // #[Computed]
-    // public function userRole()
-    // {
-    //     return $this->board->currentUserRole();
-    // }
 
     // update board title
     public function updateTitle(){
@@ -37,7 +31,16 @@ new class extends Component
         ]);
 
         // this patch update board name
-        $this->dispatch('board-updated', boardId: $this->board->id);
+        // $this->dispatch('board-updated', boardId: $this->board->id);
+
+        $this->board->activeUsers()
+                    ->each(function($member){
+                        $member->notify(new BoardUpdateNotification(
+                            board : $this->board,
+                            action : 'title_changed',
+                            message : 'Board `'.$this->board->slug.'` title is changed.'
+                        ));
+                    });
     }
 
     public function mount(){

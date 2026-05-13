@@ -34,9 +34,15 @@ class Board extends Model
         return $this->users()->wherePivot('status', 'pending');
     }
 
-
+    // owners
     public function owner(){
         return $this->belongsTo(User::class);
+    }
+
+    // all members
+    public function activeUsers()
+    {
+        return $this->users()->wherePivotIn('status', ['accepted', 'owner']);
     }
 
     public function lists()

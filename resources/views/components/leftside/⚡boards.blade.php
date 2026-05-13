@@ -2,7 +2,7 @@
 
 use Livewire\Component;
 use Livewire\Attributes\On;
-use \App\Models\Board;
+use App\Models\Board;
 
 new class extends Component
 {
@@ -26,7 +26,8 @@ new class extends Component
         $this->userboards = Board::where(function($query) use ($user) {
                 $query->where('owner_id', $user->id)
                     ->orWhereHas('users', function($q) use ($user) {
-                        $q->where('user_id', $user->id);
+                        $q->where('user_id', $user->id)
+                          ->where('status', 'accepted');
                     });
             })
             ->where('is_archive', false)
@@ -34,23 +35,6 @@ new class extends Component
             ->with(['labels', 'users'])
             ->get();
     }
-
-
-    // public function updateSingleBoard($boardId){
-
-    //     $updatedBoard = Board::with(['labels', 'users'])->find($boardId);
-
-    //     if ($updatedBoard) {
-    //         // replace updated board with boards in memory
-    //         $this->userboards = $this->userboards->map(function ($board) use ($updatedBoard) {
-    //             if ($board->id === $updatedBoard->id) {
-    //                 return $updatedBoard;
-    //             }
-    //             return $board;
-    //             // return $board->id === $updatedBoard->id ? $updatedBoard : $board;
-    //         });
-    //     }
-    // }
 };
 ?>
 

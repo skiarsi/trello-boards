@@ -2,6 +2,7 @@
 
 use Livewire\Component;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 
 new class extends Component
 {
@@ -10,15 +11,15 @@ new class extends Component
 
     public $title = '';
 
-    // #[Computed]
-    // public function userRole()
-    // {
-    //     return $this->board->currentUserRole();
-    // }
 
 
     public function mount($board){
         $this->board = $board;
+        $this->boardTitle();
+    }
+
+    #[On('board-updated')]
+    public function boardTitle(){
         $this->title = $this->board->title;
     }
 };
@@ -47,11 +48,12 @@ new class extends Component
 
 
 
-        {{-- board setting menu --}}
-        <livewire:board.settingmenu
-                        :userRole="$userRole"
-                        :board="$board" />
-
+        @if ($this->userRole !== "viewer")
+            {{-- board setting menu --}}
+            <livewire:board.settingmenu
+                            :userRole="$userRole"
+                            :board="$board" />
+        @endif
 
     </div>
 

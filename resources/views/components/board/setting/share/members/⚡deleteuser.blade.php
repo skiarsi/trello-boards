@@ -2,6 +2,8 @@
 
 use Livewire\Component;
 use App\Models\Board;
+use App\Models\User;
+use App\Notifications\BoardRemoveMemberNotification;
 
 new class extends Component
 {
@@ -11,7 +13,21 @@ new class extends Component
     // delete user from joining request
     public function deletependinguser($userId){
         $board = Board::find($this->boardId);
-        $board->users()->detach($this->userId);
+
+
+        // first reverb
+        $invitedUser = User::find($userId);
+        $invitedUser->notify(new BoardRemoveMemberNotification($board, $userId));
+
+
+        // second update database
+        $board->users()->updateExistingPivot($this->userId,[
+            'status' => 'declined'
+        ]);
+
+
+
+
 
         $this->dispatch('member-updated');
     }

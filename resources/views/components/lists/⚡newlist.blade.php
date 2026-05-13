@@ -5,9 +5,16 @@ use Livewire\Component;
 new class extends Component
 {
     public $board;
+    public $listtitle = '';
 
     public function createnewlist(){
 
+        $this->validate([
+            'listtitle' => 'required|min:3'
+        ]);
+
+        // $this->board->
+        dd($this->listtitle);
     }
 };
 ?>
@@ -21,11 +28,11 @@ new class extends Component
             this.$refs.listInput.value = '';
         }
     }"
-    {{-- مدیریت کلید Alt --}}
+
+    {{-- L shortcut --}}
     @keydown.window.alt="altPressed = true"
     @keyup.window.alt="altPressed = false"
 
-    {{-- مدیریت هوشمند کلید L --}}
     @keydown.window.l="if (altPressed && !['INPUT', 'TEXTAREA'].includes($event.target.tagName)) {
         $event.preventDefault();
         open = true;
@@ -55,10 +62,16 @@ new class extends Component
         <span class="text-sm text-white pb-1">Create new list</span>
         <input
             x-ref="listInput"
+            wire:model="listtitle"
             type="text"
             class="bg-white py-1 text-lg px-2 border border-gray-400 text-black"
-            @keydown.enter="$wire.createnewlist().then(() => closeAndClear())"
+            {{-- @keydown.enter="$wire.createnewlist().then(() => closeAndClear())" --}}
+            @keydown.enter="$wire.createnewlist()"
             placeholder="List name..." />
+
+        @error('listtitle')
+            <span class="text-xs text-red-700 italic">{{ $message }}</span>
+        @enderror
 
         <div class="flex gap-1 w-full pt-1">
             <button

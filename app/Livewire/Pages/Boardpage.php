@@ -3,7 +3,9 @@
 namespace App\Livewire\Pages;
 
 use App\Models\Board;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 
@@ -12,6 +14,25 @@ class Boardpage extends Component
 {
     public Board $board;
     public $user;
+
+    public function boot(){
+        $user = Auth::user();
+
+        if ($this->board && $this->board->owner_id !== $user->id) {
+            $member = $this->board->users()
+                        ->where('user_id', $user->id)
+                        ->first();
+
+            if (!$member || $member->pivot->status !== 'accepted') {
+                $this->redirect(route('index'));
+            }
+        }
+    }
+
+    // #[On('board-updated')]
+    // public function redirectUser(){
+    //     $this->redirect(route('index'));
+    // }
 
     public function mount(Board $board)
     {
