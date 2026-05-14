@@ -1,6 +1,8 @@
 <?php
 
 use Livewire\Component;
+use Illuminate\Support\Str;
+
 
 new class extends Component
 {
@@ -13,8 +15,15 @@ new class extends Component
             'listtitle' => 'required|min:3'
         ]);
 
-        // $this->board->
-        dd($this->listtitle);
+        $slug = Str::slug(($this->listtitle).'-'.now()->timestamp);
+        $this->board->lists()->create([
+            'slug'  => $slug,
+            'title' => $this->listtitle,
+        ]);
+
+        $this->dispatch('list-created');
+
+
     }
 };
 ?>
@@ -28,6 +37,8 @@ new class extends Component
             this.$refs.listInput.value = '';
         }
     }"
+
+    @list-created.window="closeAndClear()"
 
     {{-- L shortcut --}}
     @keydown.window.alt="altPressed = true"
@@ -70,12 +81,12 @@ new class extends Component
             placeholder="List name..." />
 
         @error('listtitle')
-            <span class="text-xs text-red-700 italic">{{ $message }}</span>
+            <span @click.outside="$el.remove()" class="text-xs bg-red-300 text-red-700 p-0.5 rounded-sm italic my-1">{{ $message }}</span>
         @enderror
 
         <div class="flex gap-1 w-full pt-1">
             <button
-                @click="$wire.createnewlist().then(() => closeAndClear())"
+                @click="$wire.createnewlist()"
                 class="bg-sky-900 text-white text-sm py-0.5 px-3">Create</button>
             <button
                 @click="closeAndClear()"

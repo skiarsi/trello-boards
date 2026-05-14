@@ -45,7 +45,7 @@ if (window.authUserId) {
 
             // update board
             if (
-                notification.toast_type === "boardUpdate" ||
+                notification.toast_type === "boardUpdate" &&
                 notification.action === "archived"
             ) {
                 // redirect user to index for archive
