@@ -2,12 +2,14 @@
 
 use Livewire\Component;
 use Illuminate\Support\Str;
+use App\Notifications\lists\CreateNewNotification;
 
 
 new class extends Component
 {
     public $board;
     public $listtitle = '';
+    public $list = null;
 
     public function createnewlist(){
 
@@ -16,12 +18,21 @@ new class extends Component
         ]);
 
         $slug = Str::slug(($this->listtitle).'-'.now()->timestamp);
-        $this->board->lists()->create([
+        $list = $this->board->lists()->create([
             'slug'  => $slug,
             'title' => $this->listtitle,
         ]);
 
         $this->dispatch('list-created');
+
+        $this->board->activeUsers()
+                        ->each(function($members) use ($list){
+                            $members->notify(new CreateNewNotification(
+                                board: $this->board,
+                                list: $list,
+                                message: 'New list created'
+                            ));
+                        });
 
 
     }
@@ -51,7 +62,7 @@ new class extends Component
     }"
 
     @keydown.escape.window="closeAndClear()"
-    class="w-68 flex flex-col cursor-pointer select-none"
+    class="w-68 shrink-0 flex flex-col cursor-pointer select-none"
 >
 
     {{-- New label button --}}

@@ -8,7 +8,7 @@ new class extends Component
 };
 ?>
 
-<div class="w-68 py-1 px-2 flex flex-col" style="background:{{ $list->color }}">
+<div class="w-68 shrink-0 py-1 pb-0 px-2 flex flex-col shadow rounded-sm" style="background:{{ $list->color }}">
 
     <div class="w-full flex justify-between">
         {{-- list title component --}}

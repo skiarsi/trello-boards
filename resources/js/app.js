@@ -3,7 +3,6 @@ import Pusher from "pusher-js";
 
 window.Pusher = Pusher;
 
-// فقط اگر کاربر لاگین کرده Echo رو راه‌اندازی کن
 if (window.authUserId) {
     window.Echo = new Echo({
         broadcaster: "reverb",
@@ -17,11 +16,20 @@ if (window.authUserId) {
 
     window.Echo.private(`App.Models.User.${window.authUserId}`).notification(
         (notification) => {
-            window.Livewire.dispatch("board-updated");
-            window.Livewire.dispatch("member-updated");
+            // ─── Board notifications ───────────────────────────────────
+            if (notification.toast_type === "boardUpdate") {
+                window.Livewire.dispatch("board-updated");
 
-            // show toast for member join/remove
+                if (notification.action === "archived") {
+                    setTimeout(() => {
+                        window.location.href = "/";
+                    }, 1500);
+                }
+            }
+
+            // ─── Member notifications ──────────────────────────────────
             if (notification.toast_type === "inviteMember") {
+                window.Livewire.dispatch("member-updated");
                 window.Livewire.dispatch("show_toast", {
                     type: notification.toast_type,
                     message: notification.message,
@@ -32,8 +40,8 @@ if (window.authUserId) {
                 });
             }
 
-            // redirect user if its removed from a board
             if (notification.toast_type === "removeMember") {
+                window.Livewire.dispatch("member-updated");
                 const currentPath = window.location.pathname;
                 const boardPath = `/board/${notification.board_slug}`;
                 if (currentPath === boardPath) {
@@ -43,15 +51,13 @@ if (window.authUserId) {
                 }
             }
 
-            // update board
-            if (
-                notification.toast_type === "boardUpdate" &&
-                notification.action === "archived"
-            ) {
-                // redirect user to index for archive
-                setTimeout(() => {
-                    window.location.href = "/";
-                }, 1500);
+            // ─── List notifications ────────────────────────────────────
+            if (notification.action === "create_list") {
+                window.Livewire.dispatch("list-created", {
+                    list_id: notification.list_id,
+                    list_slug: notification.list_slug,
+                    board_slug: notification.board_slug,
+                });
             }
         },
     );

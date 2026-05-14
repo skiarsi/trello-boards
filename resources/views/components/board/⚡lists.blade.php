@@ -13,12 +13,18 @@ new class extends Component
     public function mount(){
 
     }
+
+    #[On('list-created')]
+    public function refreshLists()
+    {
+        $this->boardlists = $this->board->lists()->get();
+    }
 };
 ?>
 
 <div
     style="background-color:{{ $board->color }}"
-    class="w-full h-full py-3 px-3 flex gap-3 justify-start items-start"
+    class="flex-1 h-full py-3 px-3 flex flex-row gap-3 items-start overflow-x-auto"
     >
 
     {{-- new list button --}}

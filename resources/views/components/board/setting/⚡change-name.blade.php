@@ -30,9 +30,6 @@ new class extends Component
             'title' => $this->title
         ]);
 
-        // this patch update board name
-        // $this->dispatch('board-updated', boardId: $this->board->id);
-
         $this->board->activeUsers()
                     ->each(function($member){
                         $member->notify(new BoardUpdateNotification(
