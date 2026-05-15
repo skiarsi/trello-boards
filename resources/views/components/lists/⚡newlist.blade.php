@@ -30,7 +30,7 @@ new class extends Component
                             $members->notify(new CreateNewNotification(
                                 board: $this->board,
                                 list: $list,
-                                message: 'New list created'
+                                message: ''
                             ));
                         });
 

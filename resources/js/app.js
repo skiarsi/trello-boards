@@ -59,6 +59,10 @@ if (window.authUserId) {
                     board_slug: notification.board_slug,
                 });
             }
+
+            if (notification.action === "update_list") {
+                window.Livewire.dispatch("list-updated");
+            }
         },
     );
 }

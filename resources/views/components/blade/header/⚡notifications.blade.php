@@ -109,8 +109,7 @@ new class extends Component
                     @foreach(auth()->user()->notifications->take(7) as $notification)
                         <div class="w-full">
                             <div class="ps-1 block text-base/1 {{ $notification->read_at ? 'opacity-40' : '' }}">
-                                <p class="text-sm text-gray-600">{{ $notification->data['message'] }}</p>
-                                {{-- <a >View</a> --}}
+                                <p class="text-xs text-gray-600">{{ $notification->data['message'] }}</p>
                                 <div class="flex gap-2">
                                     <span class="block text-xs">{{ $notification->created_at->diffForHumans() }}</span>
                                     @if (!$notification->read_at)

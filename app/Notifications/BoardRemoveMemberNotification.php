@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Auth;
 
 class BoardRemoveMemberNotification extends Notification
 {
@@ -56,6 +57,7 @@ class BoardRemoveMemberNotification extends Notification
         return [
             'toast_type'=> 'removeMember',
             'board_id'  => $this->board->id,
+            'user'      => Auth::user()->name,
             'url'       => route('board', $this->board->slug),
             'message'   => 'You have been removed from board #'. $this->board->slug,
         ];

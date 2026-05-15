@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Auth;
 
 class CreateNewNotification extends Notification
 {
@@ -33,6 +34,9 @@ class CreateNewNotification extends Notification
      */
     public function via(object $notifiable): array
     {
+        if ($notifiable->id === Auth::user()->id) {
+            return ['broadcast'];
+        }
         return ['broadcast','database'];
     }
 
@@ -58,8 +62,9 @@ class CreateNewNotification extends Notification
             'toast_type'=> 'createlist',
             'action'    => 'create_list',
             'list_slug' => $this->list->slug,
-            'board_slug' => $this->board->slug,
-            'message'   => 'List `<strong>'.$this->list->title.'</strong>` for board `<strong>'.$this->board->title.'<strong>` created',
+            'user'      => Auth::user()->name,
+            'board_slug'=> $this->board->slug,
+            'message'   => 'List `'.$this->list->title.'` for board `'.$this->board->title.'` created by: '.Auth::user()->name,
         ];
     }
 
@@ -70,9 +75,10 @@ class CreateNewNotification extends Notification
             'toast_type'=> 'createlist',
             'action'    => 'create_list',
             'list_id'   => $this->list->id,
+            'user'      => Auth::user()->name,
             'list_slug' => $this->list->slug,
-            'board_slug' => $this->board->slug,
-            'message'   => 'New list for board `'.$this->board->slug.'` created',
+            'board_slug'=> $this->board->slug,
+            'message'   => 'New list for board `'.$this->board->slug.'` created by: '.Auth::user()->name,
         ]);
     }
 }

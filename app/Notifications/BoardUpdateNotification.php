@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Auth;
 
 class BoardUpdateNotification extends Notification
 {
@@ -32,7 +33,7 @@ class BoardUpdateNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        if ($notifiable->id === auth()->id()) {
+        if ($notifiable->id === Auth::user()->id) {
             return ['broadcast'];
         }
         return ['broadcast', 'database'];
@@ -72,8 +73,9 @@ class BoardUpdateNotification extends Notification
         return [
             'toast_type'=> 'boardUpdate',
             'board_id'  => $this->board->id,
+            'user'      => Auth::user()->name,
             'url'       => route('board', $this->board->slug),
-            'message'   => 'Board updated - '. $this->action,
+            'message'   => 'Board updated by '.Auth::user()->name.' - '. $this->action,
         ];
     }
 }

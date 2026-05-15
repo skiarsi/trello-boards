@@ -29,9 +29,10 @@ new class extends Component
 ?>
 
 <div class="flex-1 h-full flex flex-col overflow-hidden">
+
     <livewire:board.header :board="$board" :userRole="$userRole" />
 
 
-    <livewire:board.lists :board="$board" :boardlists="$boardlist" />
+    <livewire:board.lists :userRole="$userRole" :board="$board" :boardlists="$boardlist" />
 
 </div>

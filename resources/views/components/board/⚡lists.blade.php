@@ -8,6 +8,7 @@ new class extends Component
 {
     public $board;
     public $boardlists;
+    public $userRole;
 
     #[On('board-updated')]
     public function mount(){
@@ -28,10 +29,12 @@ new class extends Component
     >
 
     {{-- new list button --}}
-    <livewire:lists.newlist :board="$board" />
+    @if ($this->userRole !=="viewer")
+        <livewire:lists.newlist :userRole="$userRole" :board="$board" />
+    @endif
 
     {{-- lists --}}
     @foreach ($this->boardlists as $list)
-        <livewire:lists.main :list="$list" />
+        <livewire:lists.main :userRole="$userRole" :board="$this->board" :list="$list" wire:key="{{ 'list-'.$list->id }}" />
     @endforeach
 </div>
