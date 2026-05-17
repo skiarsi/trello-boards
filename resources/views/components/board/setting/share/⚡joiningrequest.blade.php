@@ -49,12 +49,12 @@ new class extends Component
                     <livewire:board.setting.share.members.deleteuser
                         :userId="$user->id"
                         :boardId="$board->id"
-                        :wire:key="'delete-user-'.$user->id" />
+                        wire:key="delete-user-{{ $user->id }}" />
 
                     <livewire:board.setting.share.members.updateuserrole
                         :board="$board"
                         :user="$user"
-                        :wire:key="'update-role-' . $user->id . '-' . $user->pivot->role" />
+                        wire:key="update-role-{{ $user->id }} - {{ $user->pivot->role }}" />
                 </div>
             </div>
         @else

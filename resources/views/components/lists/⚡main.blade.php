@@ -15,7 +15,6 @@ new class extends Component
     #[On('list-updated')]
     public function mount(){
         $this->listId = $this->list->id;
-
     }
 
     public function collapsing(){
@@ -48,8 +47,10 @@ new class extends Component
     <div class="w-full flex justify-between">
         {{-- list title component --}}
         <livewire:lists.head.title
-            :class="$this->list->collapsed ? 'cursor-default select-none' : ''"
-            :title="$this->list->title" />
+            :class="$this->list->collapsed ? 'cursor-default pb-0.5 select-none' : ''"
+            :list="$this->list"
+            :labels="$this->list->labels"
+            />
 
 
         <div class="flex gap-2">

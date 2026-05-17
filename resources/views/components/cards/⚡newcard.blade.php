@@ -28,6 +28,7 @@ new class extends Component
 
     <div
         x-show="open"
+        @click.outside=" open = false; clearclose() "
         class="w-full flex flex-col gap-1">
             <input
                 placeholder="Card title..."

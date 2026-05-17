@@ -59,7 +59,10 @@ new class extends Component
 
             <div class="flex flex-col w-full">
                 <span class="font-medium text-gray-600 group-hover:text-gray-900">{{ $board->title }}</span>
-                <livewire:board.labelmanagement.labels :labels="$board->labels" :board="$board" :wire:key="'labellist-'.$board->id.'-'.$refreshKey" />
+                <livewire:board.labelmanagement.labels
+                            :labels="$board->labels"
+                            :board="$board"
+                            wire:key="labellist-{{ $board->id.'-'.$refreshKey }}" />
             </div>
 
 

@@ -12,16 +12,4 @@ class Label extends Model
     {
         return $this->morphTo();
     }
-    // public function borderlist(){
-    //     return $this->belongsToMany(BoardList::class)
-    //                     ->withPivot('title')
-    //                     ->withTimestamps();
-    // }
-
-    // public function boards()
-    // {
-    //     return $this->belongsToMany(Board::class)
-    //                         ->withPivot('title','color')
-    //                         ->withTimestamps();;
-    // }
 }

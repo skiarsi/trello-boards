@@ -11,19 +11,9 @@ new class extends Component
     public $userRole;
     public $boardlist = [];
 
-
-    #[On('list-created')]
-    public function loadlists()
-    {
-        $this->boardlist = $this->board->lists()->with(['cards'])->get();
-    }
-
-
-
     public function mount($board)
     {
         $this->board = $board;
-        $this->loadlists();
     }
 };
 ?>
@@ -33,6 +23,7 @@ new class extends Component
     <livewire:board.header :board="$board" :userRole="$userRole" />
 
 
-    <livewire:board.lists :userRole="$userRole" :board="$board" :boardlists="$boardlist" />
+
+    <livewire:board.lists :userRole="$userRole" :board="$board" />
 
 </div>

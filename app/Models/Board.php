@@ -51,7 +51,7 @@ class Board extends Model
     }
 
     public function labels(){
-        return $this->morphMany(Label::class,'labelabel');
+        return $this->morphMany(Label::class,'labelable');
     }
 
 

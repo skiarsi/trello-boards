@@ -11,4 +11,5 @@ class Card extends Model
     public function boardlist(){
         return $this->belongsTo(Boardlist::class);
     }
+
 }
