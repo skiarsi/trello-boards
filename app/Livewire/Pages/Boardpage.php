@@ -29,11 +29,6 @@ class Boardpage extends Component
         }
     }
 
-    // #[On('board-updated')]
-    // public function redirectUser(){
-    //     $this->redirect(route('index'));
-    // }
-
     public function mount(Board $board)
     {
         if ($board->is_archive){

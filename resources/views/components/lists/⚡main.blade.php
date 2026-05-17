@@ -15,6 +15,7 @@ new class extends Component
     #[On('list-updated')]
     public function mount(){
         $this->listId = $this->list->id;
+
     }
 
     public function collapsing(){
@@ -62,13 +63,15 @@ new class extends Component
 
        </div>
     </div>
-    <div class="w-full">
+    @if (!$this->list->collapsed)
+        <div class="w-full">
 
-        @if ($this->userRole !== 'viewer' && !$this->list->collapsed)
-            <livewire:cards.newcard :list="$list" />
-        @endif
+            @if ($this->userRole !== 'viewer' && !$this->list->collapsed)
+                <livewire:cards.newcard :list="$list" />
+            @endif
 
-        <livewire:cards.allcards :list="$list" />
+            <livewire:cards.allcards :list="$list" />
 
-    </div>
+        </div>
+    @endif
 </div>

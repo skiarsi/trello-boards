@@ -6,12 +6,12 @@ use Livewire\Attributes\On;
 new class extends Component
 {
     public $board;
+    public $users;
     public $myModal1 = false;
-    public $users=[];
 
 
     public function loadBoardUsers(){
-        $this->users = $this->board->users()->get();
+        $this->users = $this->board->users;
     }
 
     public function mount(){
@@ -65,7 +65,7 @@ new class extends Component
             <livewire:board.setting.share.shareform :board="$this->board" />
 
 
-            <livewire:board.setting.share.userslist :board="$this->board" :users="$users" />
+            <livewire:board.setting.share.userslist :board="$this->board" />
         </div>
     </div>
 </div>

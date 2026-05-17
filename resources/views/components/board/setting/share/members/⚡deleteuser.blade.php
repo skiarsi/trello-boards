@@ -15,18 +15,19 @@ new class extends Component
         $board = Board::find($this->boardId);
 
 
-        // first reverb
+        // 1. read status
+        $member = $board->users()->where('user_id', $userId)->first();
+        $wasPending = $member?->pivot->status;
+
+        // 2. reverb
         $invitedUser = User::find($userId);
-        $invitedUser->notify(new BoardRemoveMemberNotification($board, $userId));
+        $invitedUser->notify(new BoardRemoveMemberNotification($board, $userId, $wasPending));
 
 
-        // second update database
-        $board->users()->updateExistingPivot($this->userId,[
+        // 3. update database
+        $board->users()->updateExistingPivot($userId,[
             'status' => 'declined'
         ]);
-
-
-
 
 
         $this->dispatch('member-updated');

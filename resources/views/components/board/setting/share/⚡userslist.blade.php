@@ -4,7 +4,6 @@ use Livewire\Component;
 
 new class extends Component
 {
-    public $users;
     public $board;
 };
 ?>

@@ -6,18 +6,26 @@ use Livewire\Attributes\On;
 new class extends Component
 {
     public $board;
+    public $users;
+
+
+    public function mount()
+    {
+        $this->users = $this->board->users;
+    }
 
     #[On('userlists-updated')]
     #[On('member-updated')]
     public function refreshUsers()
     {
         $this->board->load('users');
+        $this->users = $this->board->users;
     }
 };
 ?>
 
 <div class="tab-content bg-base-100 py-3">
-    @foreach ($this->board->users as $user)
+    @foreach ($this->users as $user)
         @if ($user->pivot->status === "pending")
             <div class="flex gap-3 py-1 w-full" wire:key="user-{{ $user->id }}">
                 <div class="w-8 h-8 mt-1.5 rounded-full overflow-hidden flex justify-center items-center align-middle border-2 border-gray-500 bg-stone-200 select-none">

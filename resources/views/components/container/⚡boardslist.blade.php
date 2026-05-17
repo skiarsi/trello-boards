@@ -15,7 +15,7 @@ new class extends Component
     #[On('list-created')]
     public function loadlists()
     {
-        $this->boardlist = $this->board->lists()->get();
+        $this->boardlist = $this->board->lists()->with(['cards'])->get();
     }
 
 

@@ -15,6 +15,7 @@ new class extends Component
 
 
     #[On('board-created')]
+    #[On('member-updated')]
     #[On('board-updated')]
     public function loadAllBoards(){
 

@@ -16,14 +16,16 @@ class BoardRemoveMemberNotification extends Notification
 
     public $board;
     public $userId;
+    public $wasPending;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(Board $board, $userId)
+    public function __construct(Board $board, $userId, $wasPending)
     {
         $this->board = $board;
         $this->userId = $userId;
+        $this->wasPending = $wasPending;
     }
 
     /**
@@ -65,8 +67,6 @@ class BoardRemoveMemberNotification extends Notification
 
     public function toBroadcast($notifiable): BroadcastMessage {
 
-        $member = $this->board->users()->where('user_id', $this->userId)->first();
-        $wasPending = $member->pivot->status;
 
         return new BroadcastMessage([
             'toast_type'=> 'removeMember',
@@ -74,7 +74,7 @@ class BoardRemoveMemberNotification extends Notification
             'board_slug'=> $this->board->slug,
             'url'       => route('board', $this->board->slug),
             'message'   => 'You have been removed from board: '. $this->board->slug,
-            'was_pending' => $wasPending,
+            'was_pending' => $this->wasPending,
         ]);
     }
 }

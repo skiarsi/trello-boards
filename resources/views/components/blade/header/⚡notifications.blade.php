@@ -78,6 +78,8 @@ new class extends Component
         $board->users()->updateExistingPivot($user->id,[
             'status' => $response
         ]);
+
+        $this->dispatch('board-updated');
     }
 };
 ?>
@@ -126,11 +128,9 @@ new class extends Component
                                 <div class="w-full ps-1 flex gap-2 pt-1">
                                     <span
                                         wire:click="responeTojoin('{{ $notification->data['board_id'] }}', 'accepted', '{{ $notification->id }}')"
-                                        {{-- wire:click="acceptinvitation('{{ $notification->data['board_id'] }}')" --}}
                                         class="cursor-pointer py-0.5 text-green-600 text-sm font-bold hover:text-green-900 select-none">Accept</span>
                                     <span
                                         wire:click="responeTojoin('{{ $notification->data['board_id'] }}', 'declined', '{{ $notification->id }}')"
-                                        {{-- wire:click="declinedinvitation('{{ $notification->data['board_id'] }}')" --}}
                                         class="cursor-pointer py-0.5 px-2 text-red-600 text-sm font-bold hover:text-red-900 select-none">Reject</span>
                                 </div>
                             @endif
