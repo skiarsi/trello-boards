@@ -10,7 +10,7 @@ new class extends Component
 };
 ?>
 
-<div class="pt-0.5" wire:click="$parent.collapsing">
+<div class="pt-1" wire:click="$parent.collapsing">
     @if ($collapse)
         <x-bx-expand-horizontal class="w-5 cursor-pointer text-gray-500 hover:text-gray-900" />
     @else

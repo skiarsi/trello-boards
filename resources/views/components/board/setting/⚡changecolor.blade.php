@@ -2,7 +2,7 @@
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
-use App\Notifications\BoardUpdateNotification;
+use App\Notifications\boards\BoardUpdateNotification;
 
 new class extends Component
 {

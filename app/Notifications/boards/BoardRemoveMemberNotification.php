@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\boards;
 
 use App\Models\Board;
 use Illuminate\Bus\Queueable;

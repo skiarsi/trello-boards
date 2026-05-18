@@ -6,14 +6,14 @@ new class extends Component
 {
     public $user;
     public $board;
-    public $role; // این به wire:model وصل می‌شود
+    public $role;
 
     public function mount($user)
     {
         $this->role = $user->pivot->role ?? '';
     }
 
-    // این متد به محض تغییر مقدار $role به صورت خودکار اجرا می‌شود
+
     public function updatedRole($value)
     {
         $userId = $this->user->id;

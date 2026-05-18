@@ -3,6 +3,7 @@
 use Livewire\Component;
 use App\Models\Label;
 use Illuminate\Validation\Rule;
+use App\Notifications\boards\NewLabelNotification;
 
 new class extends Component
 {
@@ -28,8 +29,22 @@ new class extends Component
             'color' => $this->labelcolor,
         ]);
 
+
+
         $this->dispatch('label-created');
         $this->dispatch('board-updated');
+
+
+
+        $this->board->activeUsers()
+                        ->each(function($members){
+                            $members->notify(new NewLabelNotification(
+                                board: $this->board,
+                                message: ''
+                            ));
+                        });
+
+
 
         $this->reset(['labeltext', 'labelcolor']);
     }
@@ -80,7 +95,7 @@ new class extends Component
                     openForm = false;
                 });
             "
-            >Creat</button>
+            >Create</button>
         <button
             @click="openForm = !openForm;"
             class="bg-gray-100 text-black py-1 px-5 cursor-pointer">Cancle</button>

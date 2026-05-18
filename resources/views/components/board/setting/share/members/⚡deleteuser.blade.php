@@ -3,7 +3,7 @@
 use Livewire\Component;
 use App\Models\Board;
 use App\Models\User;
-use App\Notifications\BoardRemoveMemberNotification;
+use App\Notifications\boards\BoardRemoveMemberNotification;
 
 new class extends Component
 {

@@ -18,6 +18,7 @@ new class extends Component
     #[On('show_toast')]
     #[On('board-updated')]
     #[On('list-created')]
+    #[On('load-count')]
     public function loadCount(){
         $this->unreadCount = auth()->user()
                                    ->unreadNotifications()

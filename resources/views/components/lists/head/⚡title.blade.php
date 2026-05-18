@@ -8,19 +8,12 @@ new class extends Component
     public $labels;
     public $class;
 
-    public function mount(){
-        // $this->list->loadMissing('labels');
-    }
-
-
-
-
 };
 ?>
 
 <div class="flex flex-col w-full">
     <span
-        class="{{ $this->class }} text-[1rem] text-black">{{ $this->list->title }}</span>
+        class="{{ $this->class }} text-[1.1rem] text-black">{{ $this->list->title }}</span>
 
     @if ($this->labels)
         <div class="w-full grid grid-cols-6 pb-1">

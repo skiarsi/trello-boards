@@ -27,11 +27,12 @@ class Boardlist extends Model
         return $this->morphMany(Label::class,'labelable');
     }
 
-    // public function labels(){
-    //     return $this->belongsToMany(Label::class)
-    //                     ->withPivot('title')
-    //                     ->withTimestamps();
-    // }
+
+    // get activeUsers from board relation
+    public function activeUsers()
+    {
+        return $this->board->activeUsers();
+    }
 
 
 

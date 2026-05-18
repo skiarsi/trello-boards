@@ -3,7 +3,7 @@
 use Livewire\Component;
 use App\Models\User;
 use Livewire\Attributes\On;
-use App\Notifications\BoardInvitationNotification;
+use App\Notifications\boards\BoardInvitationNotification;
 
 new class extends Component
 {

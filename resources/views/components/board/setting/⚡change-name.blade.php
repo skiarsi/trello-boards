@@ -3,7 +3,7 @@
 use Livewire\Component;
 use Livewire\Attributes\Modelable;
 use Livewire\Attributes\Computed;
-use App\Notifications\BoardUpdateNotification;
+use App\Notifications\boards\BoardUpdateNotification;
 
 new class extends Component
 {

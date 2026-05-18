@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\boards;
 
 use App\Models\Board;
 use Illuminate\Bus\Queueable;
@@ -15,14 +15,12 @@ class BoardInvitationNotification extends Notification implements ShouldBroadcas
 {
     use Queueable;
 
-    public $board;
     /**
      * Create a new notification instance.
      */
-    public function __construct(Board $board)
-    {
-        $this->board = $board;
-    }
+    public function __construct(
+        public Board $board
+    ){}
 
     /**
      * Get the notification's delivery channels.

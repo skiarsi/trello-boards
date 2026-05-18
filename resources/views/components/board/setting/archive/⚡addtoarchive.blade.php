@@ -1,7 +1,7 @@
 <?php
 
 use Livewire\Component;
-use App\Notifications\BoardUpdateNotification;
+use App\Notifications\boards\BoardUpdateNotification;
 
 new class extends Component
 {

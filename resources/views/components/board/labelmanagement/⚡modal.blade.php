@@ -1,13 +1,15 @@
 <?php
 
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 new class extends Component
 {
     public $board;
     public $labels;
 
-
+    #[On('label-created')]
+    #[On('label-deleted')]
     public function mount(){
         $this->labels = $this->board->load(['labels']);
     }
@@ -30,9 +32,10 @@ new class extends Component
                         $dispatch('resetform');
                     "
             class="bg-white w-140 pt-4 pb-4 px-7 rounded-lg flex flex-col gap-2 shadow-xl">
+
+
+
                 <div class="w-full text-xl text-gray-700 select-none font-light">Labels</div>
-
-
                 <livewire:board.labelmanagement.labels mode="manage" :labels="$this->board->labels" :board="$board" />
 
 

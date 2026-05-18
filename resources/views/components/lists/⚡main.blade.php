@@ -68,10 +68,15 @@ new class extends Component
         <div class="w-full">
 
             @if ($this->userRole !== 'viewer' && !$this->list->collapsed)
-                <livewire:cards.newcard :list="$list" />
+                <livewire:cards.newcard :board="$this->board" :list="$list" />
+
+                <hr class="border border-gray-300 mx-auto my-4 w-10/12" />
+
             @endif
 
-            <livewire:cards.allcards :list="$list" />
+            @if ($list->cards->count() > 0)
+                <livewire:cards.allcards :list="$list" :userRole="$userRole" />
+            @endif
 
         </div>
     @endif
