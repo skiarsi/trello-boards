@@ -8,6 +8,13 @@ new class extends Component
 };
 ?>
 
-<div class="w-full h-2 rounded-full" style="background-color:{{ $this->label->color }}">
-    &nbsp;
-</div>
+<x-popover position="top-start">
+    <x-slot:trigger class="w-full">
+        <div class="w-full h-2 rounded-full shadow" style="background-color:{{ $this->label->color }}">
+            &nbsp;
+        </div>
+    </x-slot:trigger>
+    <x-slot:content class="border w-40 text-sm py-1 px-3 bg-stone-950 text-white">
+        {{ $this->label->title }}
+    </x-slot:content>
+</x-popover>

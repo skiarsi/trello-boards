@@ -71,7 +71,7 @@ class NewCardNotification extends Notification
             'list_title' => $this->list->title,
             'card_title' => $this->card->title,
             'card_slug'  => $this->card->slug,
-            'user'       => Auth::user()->name,
+            'user'       => Auth::user()->id,
             'message'    => 'New card `'.$this->card->title.'` for list `'.$this->list->title.'` added',
         ]);
     }

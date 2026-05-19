@@ -18,7 +18,7 @@ new class extends Component
     #[On('list-created')]
     public function refreshLists()
     {
-        $this->boardlists = $this->board->lists()->with(['cards','labels'])->get();
+        $this->boardlists = $this->board->lists()->get();
     }
 };
 ?>
@@ -27,10 +27,6 @@ new class extends Component
     style="background-color:{{ $this->board->color }}"
     class="flex-1 h-full py-3 px-3 flex flex-row gap-3 items-start overflow-x-auto" >
 
-    {{-- new list button --}}
-    @if ($this->userRole !=="viewer")
-        <livewire:lists.newlist :userRole="$userRole" :board="$board" />
-    @endif
 
     {{-- lists --}}
     @foreach ($this->boardlists as $list)
@@ -40,4 +36,10 @@ new class extends Component
                     :list="$list"
                     wire:key="{{ 'list-'.$list->id }}" />
     @endforeach
+
+
+    {{-- new list button --}}
+    @if ($this->userRole !=="viewer")
+        <livewire:lists.newlist :userRole="$userRole" :board="$board" />
+    @endif
 </div>

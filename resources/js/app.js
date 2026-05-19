@@ -37,8 +37,13 @@ if (window.authUserId) {
                 }
 
                 // ─── Board list's card ─────────────────────────────────────
-                if (notification.toast_type === "card-newcard") {
-                    window.Livewire.dispatch("card-created");
+                if (
+                    notification.toast_type === "card-newcard" &&
+                    notification.user !== authUserId
+                ) {
+                    window.Livewire.dispatch("card-created", {
+                        listId: notification.list_id,
+                    });
                     window.Livewire.dispatch("load-count");
                 }
 
@@ -75,8 +80,9 @@ if (window.authUserId) {
                     });
                 }
 
-                if (notification.action === "update_list") {
+                if (notification.action === "update-list") {
                     window.Livewire.dispatch("list-updated");
+                    window.Livewire.dispatch("load-count");
                 }
             } catch (error) {
                 console.error("Notification handler error:", error);

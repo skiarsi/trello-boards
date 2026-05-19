@@ -3,6 +3,7 @@
 use Livewire\Component;
 use Illuminate\Support\Str;
 use App\Notifications\cards\NewCardNotification;
+use Illuminate\Support\Facades\Notification;
 
 new class extends Component
 {
@@ -24,16 +25,24 @@ new class extends Component
             'title' => $validated['cardtitle']
         ]);
 
-        $this->dispatch('card-created');
+        $this->dispatch('card-created', listId: $this->list->id);
 
-        $this->list->activeUsers()
-                        ->each(function($members) use($card){
-                            $members->notify(new NewCardNotification(
-                                list: $this->list,
-                                card: $card,
-                                message: ''
-                            ));
-                        });
+        Notification::send(
+            $this->list->activeUsers()->get(),
+            new NewCardNotification(
+                list: $this->list,
+                card: $card,
+                message: ''
+            )
+        );
+        // $this->list->activeUsers()
+        //                 ->each(function($members) use($card){
+        //                     $members->notify(new NewCardNotification(
+        //                         list: $this->list,
+        //                         card: $card,
+        //                         message: ''
+        //                     ));
+        //                 });
 
         $this->cardtitle = '';
     }

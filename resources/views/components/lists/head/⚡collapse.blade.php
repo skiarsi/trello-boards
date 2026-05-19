@@ -5,8 +5,12 @@ use Livewire\Attributes\Reactive;
 
 new class extends Component
 {
+
+    public $list;
+
     #[Reactive]
     public $collapse;
+
 };
 ?>
 

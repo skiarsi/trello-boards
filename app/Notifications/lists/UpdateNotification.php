@@ -4,9 +4,7 @@ namespace App\Notifications\lists;
 
 use App\Models\Boardlist;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +16,8 @@ class UpdateNotification extends Notification
      * Create a new notification instance.
      */
     public function __construct(
-        public Boardlist $list
+        public Boardlist $list,
+        public string $action
     )
     {
 
@@ -31,7 +30,10 @@ class UpdateNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['broadcast'];
+        if ($notifiable->id === Auth::user()->id) {
+            return ['broadcast'];
+        }
+        return ['broadcast','database'];
     }
 
     /**
@@ -50,19 +52,21 @@ class UpdateNotification extends Notification
      *
      * @return array<string, mixed>
      */
-    // public function toArray(object $notifiable): array
-    // {
-    //     return [
-    //         //
-    //     ];
-    // }
+    public function toArray(object $notifiable): array
+    {
+        return [
+            'toast_type'=> 'updatelist',
+            'action'    => $this->action,
+            'message'   => 'list updated by: `'. Auth::user()->name
+        ];
+    }
 
     public function toBroadcast(): BroadcastMessage
     {
         return new BroadcastMessage([
             'toast_type'=> 'updatelist',
-            'action'    => 'update_list',
-            'message'   => 'list updated by: `'. Auth::user()->id
+            'action'    => $this->action,
+            'message'   => 'list updated by: `'. Auth::user()->name
         ]);
     }
 }
