@@ -2,6 +2,10 @@
 
 use Livewire\Component;
 use App\Notifications\lists\UpdateNotification;
+use Illuminate\Support\Facades\Auth;
+
+
+
 new class extends Component
 {
     public $list;
@@ -29,8 +33,6 @@ new class extends Component
             return;
         }
 
-        $user = Auth::user();
-
         $this->color = $color;
 
         // Update board in DB
@@ -42,7 +44,8 @@ new class extends Component
                 ->each(function($member){
                     $member->notify(new UpdateNotification(
                         list: $this->list,
-                        action: 'update-list'
+                        action: 'update-list',
+                        sender: Auth::user()
                     ));
                 });
     }

@@ -4,6 +4,7 @@ use Livewire\Component;
 use Livewire\Attributes\Modelable;
 use Livewire\Attributes\Computed;
 use App\Notifications\boards\BoardUpdateNotification;
+use Illuminate\Support\Facades\Auth;
 
 new class extends Component
 {
@@ -35,7 +36,8 @@ new class extends Component
                         $member->notify(new BoardUpdateNotification(
                             board : $this->board,
                             action : 'title_changed',
-                            message : 'Board `'.$this->board->slug.'` title is changed.'
+                            message : 'Board `'.$this->board->slug.'` title is changed.',
+                            sender : Auth::user()
                         ));
                     });
     }

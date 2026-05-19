@@ -7,11 +7,9 @@ use App\Models\Boardlist;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Auth;
 
-class CreateNewNotification extends Notification
+class CreateNewNotification extends Notification  implements ShouldQueue
 {
     use Queueable;
 
@@ -22,6 +20,7 @@ class CreateNewNotification extends Notification
         public Board $board,
         public Boardlist $list,
         public string $message,
+        public $sender = null,
     )
     {
         //
@@ -34,7 +33,7 @@ class CreateNewNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        if ($notifiable->id === Auth::user()->id) {
+        if ($notifiable->id === $this->sender->id) {
             return ['broadcast'];
         }
         return ['broadcast','database'];
@@ -62,9 +61,9 @@ class CreateNewNotification extends Notification
             'toast_type'=> 'createlist',
             'action'    => 'create_list',
             'list_slug' => $this->list->slug,
-            'user'      => Auth::user()->name,
+            'user'      => $this->sender->name,
             'board_slug'=> $this->board->slug,
-            'message'   => 'List `'.$this->list->title.'` for board `'.$this->board->title.'` created by: '.Auth::user()->name,
+            'message'   => 'List `'.$this->list->title.'` for board `'.$this->board->title.'` created by: '.$this->sender->name,
         ];
     }
 
@@ -75,10 +74,10 @@ class CreateNewNotification extends Notification
             'toast_type'=> 'createlist',
             'action'    => 'create_list',
             'list_id'   => $this->list->id,
-            'user'      => Auth::user()->name,
+            'user'      => $this->sender->name,
             'list_slug' => $this->list->slug,
             'board_slug'=> $this->board->slug,
-            'message'   => 'New list for board `'.$this->board->slug.'` created by: '.Auth::user()->name,
+            'message'   => 'New list for board `'.$this->board->slug.'` created by: '.$this->sender->name,
         ]);
     }
 }

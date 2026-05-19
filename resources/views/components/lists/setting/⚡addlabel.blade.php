@@ -1,30 +1,69 @@
 <?php
 
 use Livewire\Component;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\lists\NewLabelNotification;
+use Illuminate\Support\Facades\Auth;
 
 new class extends Component
 {
     public $list;
-    public $labeltitle='';
+    public $title='';
     public $selectedcolor;
 
     public $colors = ["#FF6B6B","#FFD93D", "#6BCB77", "#4D96FF", "#FF922B", "#6C5CE7"];
-
-
 
     public function updatecolor($color){
         $this->selectedcolor = $color;
     }
 
     public function mount(){
-       $this->selectedcolor = $this->colors[rand(0, 5)];
+       $this->firstLabelColor();
+    }
+
+    public function firstLabelColor(){
+        $this->selectedcolor = $this->colors[rand(0, 5)];
+    }
+
+    public function createLabel(){
+        $validate = $this->validate([
+            'title'    => 'required|string|min:2|max:25',
+            'selectedcolor' => [
+                                'required' ,
+                                Rule::in($this->colors)
+                            ]
+        ]);
+
+        // create new label
+        $this->list->labels()->create([
+            'title' => $this->title,
+            'color' => $this->selectedcolor,
+        ]);
+
+        $this->dispatch('listlable-updated');
+
+        Notification::send(
+            $this->list->activeUsers()->get(),
+            new NewLabelNotification(
+                list: $this->list,
+                labeltitle: $this->title,
+                sender: Auth::user()
+            )
+        );
+
+        $this->title = '';
+        $this->selectedcolor = $this->colors[rand(0, 5)];
     }
 };
 ?>
 
 <div
     x-data="{open : false, listId: {{ $this->list->id }}}"
-    @open-addlistlabel.window= "open = ($event.detail.listId === listId)"
+    @open-addlistlabel.window= "
+                                    open = ($event.detail.listId === listId);
+                                    $nextTick(() => $refs.inputLabel.focus());
+                               "
     class="w-full"
     >
     <div
@@ -44,16 +83,22 @@ new class extends Component
                 <div
                     class="w-5 h-full rounded-lg"
                     style="background-color: {{ $this->selectedcolor }}">&nbsp;</div>
+                <div class="flex-1">
+                    <input
+                        wire:model="title"
+                        type="text"
+                        x-ref="inputLabel"
+                        class=" bg-white border border-gray-400 text-black py-0.5 px-2 text-sm w-full rounded-sm"
+                        placeholder="Label title..." />
 
-                <input
-                    wire:model="labeltitle"
-                    type="text"
-                    class="flex-1 bg-white border border-gray-400 text-black py-0.5 px-2 text-sm w-full rounded-sm"
-                    placeholder="Label title..." />
+                    @error('title')
+                        <span class="block mt-0.5 text-red-700 bg-white px-1 rounded-sm text-xs italic">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
 
             <div class="flex gap-1">
-                <button class="bg-sky-700 text-white py-0 px-4 text-sm cursor-pointer">create</button>
+                <button wire:click="createLabel" class="bg-sky-700 text-white py-0 px-4 text-sm cursor-pointer">create</button>
                 <button @click="open = false" class="text-black px-4 text-sm cursor-pointer">cancel</button>
             </div>
     </div>

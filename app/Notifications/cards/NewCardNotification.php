@@ -5,11 +5,11 @@ namespace App\Notifications\cards;
 use App\Models\Boardlist;
 use App\Models\Card;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Auth;
 
-class NewCardNotification extends Notification
+class NewCardNotification extends Notification  implements ShouldQueue
 {
     use Queueable;
 
@@ -20,6 +20,7 @@ class NewCardNotification extends Notification
         public Boardlist $list,
         public Card $card,
         public string $message,
+        public $sender = null
 
     )
     {
@@ -33,7 +34,7 @@ class NewCardNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        if ($notifiable->id === Auth::user()->id) {
+        if ($notifiable->id === $this->sender->id) {
             return ['broadcast'];
         }
         return ['broadcast', 'database'];
@@ -55,7 +56,7 @@ class NewCardNotification extends Notification
             'list_title' => $this->list->title,
             'card_title' => $this->card->title,
             'card_slug'  => $this->card->slug,
-            'user'       => Auth::user()->name,
+            'user'       => $this->sender->name,
             'message'    => 'New card `'.$this->card->title.'` for list `'.$this->list->title.'` added',
         ];
     }
@@ -71,7 +72,7 @@ class NewCardNotification extends Notification
             'list_title' => $this->list->title,
             'card_title' => $this->card->title,
             'card_slug'  => $this->card->slug,
-            'user'       => Auth::user()->id,
+            'user'       => $this->sender->name,
             'message'    => 'New card `'.$this->card->title.'` for list `'.$this->list->title.'` added',
         ]);
     }

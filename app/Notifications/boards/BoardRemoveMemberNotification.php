@@ -6,11 +6,10 @@ use App\Models\Board;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Auth;
 
-class BoardRemoveMemberNotification extends Notification
+
+class BoardRemoveMemberNotification extends Notification  implements ShouldQueue
 {
     use Queueable;
 
@@ -21,7 +20,7 @@ class BoardRemoveMemberNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct(Board $board, $userId, $wasPending)
+    public function __construct(Board $board, $userId, $wasPending, public $sender)
     {
         $this->board = $board;
         $this->userId = $userId;
@@ -59,7 +58,7 @@ class BoardRemoveMemberNotification extends Notification
         return [
             'toast_type'=> 'removeMember',
             'board_id'  => $this->board->id,
-            'user'      => Auth::user()->name,
+            'user'      => $this->sender->name,
             'url'       => route('board', $this->board->slug),
             'message'   => 'You have been removed from board #'. $this->board->slug,
         ];

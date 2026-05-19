@@ -40,7 +40,6 @@ class Boardpage extends Component
 
     public function render()
     {
-
         return view('livewire.pages.boardpage',[
             'board' => $this->board,
             'userRole'  => $this->board->currentUserRole()

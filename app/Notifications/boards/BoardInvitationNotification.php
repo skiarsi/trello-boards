@@ -7,11 +7,10 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Auth;
 
-class BoardInvitationNotification extends Notification implements ShouldBroadcast
+
+class BoardInvitationNotification extends Notification implements ShouldBroadcast, ShouldQueue
 {
     use Queueable;
 
@@ -19,7 +18,8 @@ class BoardInvitationNotification extends Notification implements ShouldBroadcas
      * Create a new notification instance.
      */
     public function __construct(
-        public Board $board
+        public Board $board,
+        public $sender = null
     ){}
 
     /**
@@ -43,7 +43,7 @@ class BoardInvitationNotification extends Notification implements ShouldBroadcas
         return [
             'toast_type'=> 'inviteMember',
             'board_id'  => $this->board->id,
-            'user'      => Auth::user()->name,
+            'user'      => $this->sender->name,
             'url'       => route('board',$this->board->slug),
             'message'   => "You have been invited to: ". $this->board->title
         ];

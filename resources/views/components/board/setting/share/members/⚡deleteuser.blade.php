@@ -21,7 +21,7 @@ new class extends Component
 
         // 2. reverb
         $invitedUser = User::find($userId);
-        $invitedUser->notify(new BoardRemoveMemberNotification($board, $userId, $wasPending));
+        $invitedUser->notify(new BoardRemoveMemberNotification($board, $userId, $wasPending, sender: Auth::user()));
 
 
         // 3. update database

@@ -4,11 +4,12 @@ namespace App\Notifications\lists;
 
 use App\Models\Boardlist;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Auth;
 
-class UpdateNotification extends Notification
+
+class UpdateNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -17,7 +18,8 @@ class UpdateNotification extends Notification
      */
     public function __construct(
         public Boardlist $list,
-        public string $action
+        public string $action,
+        public $sender = null
     )
     {
 
@@ -30,10 +32,10 @@ class UpdateNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        if ($notifiable->id === Auth::user()->id) {
-            return ['broadcast'];
-        }
-        return ['broadcast','database'];
+        // if ($notifiable->id === Auth::user()->id) {
+        //     return ['broadcast'];
+        // }
+        return ['broadcast'];
     }
 
     /**
@@ -52,21 +54,21 @@ class UpdateNotification extends Notification
      *
      * @return array<string, mixed>
      */
-    public function toArray(object $notifiable): array
-    {
-        return [
-            'toast_type'=> 'updatelist',
-            'action'    => $this->action,
-            'message'   => 'list updated by: `'. Auth::user()->name
-        ];
-    }
+    // public function toArray(object $notifiable): array
+    // {
+    //     return [
+    //         'toast_type'=> 'updatelist',
+    //         'action'    => $this->action,
+    //         'message'   => 'list updated by: `'. Auth::user()->name
+    //     ];
+    // }
 
     public function toBroadcast(): BroadcastMessage
     {
         return new BroadcastMessage([
             'toast_type'=> 'updatelist',
             'action'    => $this->action,
-            'message'   => 'list updated by: `'. Auth::user()->name
+            'message'   => 'list updated by: `'. $this->sender->name
         ]);
     }
 }

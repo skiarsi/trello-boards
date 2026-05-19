@@ -49,7 +49,8 @@ new class extends Component
                         $member->notify(new BoardUpdateNotification(
                             board : $this->board,
                             action : 'color_change',
-                            message : 'Board `'.$this->board->title.'` color is changed.'
+                            message : 'Board `'.$this->board->title.'` color is changed.',
+                            sender: Auth::user()
                         ));
                     });
     }

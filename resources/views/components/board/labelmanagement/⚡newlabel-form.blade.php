@@ -4,6 +4,7 @@ use Livewire\Component;
 use App\Models\Label;
 use Illuminate\Validation\Rule;
 use App\Notifications\boards\NewLabelNotification;
+use Illuminate\Support\Facades\Auth;
 
 new class extends Component
 {
@@ -40,7 +41,8 @@ new class extends Component
                         ->each(function($members){
                             $members->notify(new NewLabelNotification(
                                 board: $this->board,
-                                message: ''
+                                message: '',
+                                sender: Auth::user()
                             ));
                         });
 

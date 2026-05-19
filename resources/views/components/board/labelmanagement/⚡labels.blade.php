@@ -3,6 +3,7 @@
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Notifications\boards\DeleteLabelNotification;
+use Illuminate\Support\Facades\Auth;
 
 new class extends Component
 {
@@ -28,7 +29,8 @@ new class extends Component
                             $members->notify(new DeleteLabelNotification(
                                 board: $this->board,
                                 label: $labelTitle,
-                                message: ''
+                                message: '',
+                                sender: Auth::user()
                             ));
                         });
     }

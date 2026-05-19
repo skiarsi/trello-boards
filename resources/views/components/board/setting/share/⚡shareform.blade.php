@@ -4,6 +4,7 @@ use Livewire\Component;
 use App\Models\User;
 use Livewire\Attributes\On;
 use App\Notifications\boards\BoardInvitationNotification;
+use Illuminate\Support\Facades\Auth;
 
 new class extends Component
 {
@@ -72,7 +73,11 @@ new class extends Component
 
         // reverb
         $invitedUser = User::find($userId);
-        $invitedUser->notify(new BoardInvitationNotification($this->board));
+        $invitedUser->notify(new BoardInvitationNotification(
+                board: $this->board,
+                sender: Auth::user()
+            )
+        );
 
         $this->search = '';
         $this->results = [];

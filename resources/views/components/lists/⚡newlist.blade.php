@@ -3,6 +3,7 @@
 use Livewire\Component;
 use Illuminate\Support\Str;
 use App\Notifications\lists\CreateNewNotification;
+use Illuminate\Support\Facades\Auth;
 
 
 new class extends Component
@@ -30,7 +31,8 @@ new class extends Component
                             $members->notify(new CreateNewNotification(
                                 board: $this->board,
                                 list: $list,
-                                message: ''
+                                message: '',
+                                sender: Auth::user()
                             ));
                         });
 

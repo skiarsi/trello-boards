@@ -84,6 +84,15 @@ if (window.authUserId) {
                     window.Livewire.dispatch("list-updated");
                     window.Livewire.dispatch("load-count");
                 }
+
+                // ─── List label update ──────────────────────────────────────
+                if (
+                    notification.action === "label_new" ||
+                    notification.action === "label_remove"
+                ) {
+                    window.Livewire.dispatch("listlable-updated");
+                    window.Livewire.dispatch("load-count");
+                }
             } catch (error) {
                 console.error("Notification handler error:", error);
             }

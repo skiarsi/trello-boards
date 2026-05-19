@@ -6,11 +6,9 @@ use App\Models\Board;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Auth;
 
-class NewLabelNotification extends Notification
+class NewLabelNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -19,7 +17,8 @@ class NewLabelNotification extends Notification
      */
     public function __construct(
         public Board $board,
-        public string $message
+        public string $message,
+        public $sender = null
     )
     {
     }
@@ -31,7 +30,7 @@ class NewLabelNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        if ($notifiable->id === Auth::user()->id) {
+        if ($notifiable->id === $this->sender->id) {
             return ['broadcast'];
         }
         return ['broadcast', 'database'];
@@ -63,7 +62,7 @@ class NewLabelNotification extends Notification
             'board_id'    => $this->board->id,
             'board_slug'  => $this->board->slug,
             'board_title' => $this->board->title,
-            'user'        => Auth::user()->name,
+            'user'        => $this->sender->name,
             'message'     => 'New label for board `'.$this->board->title.'` added',
         ]);
     }

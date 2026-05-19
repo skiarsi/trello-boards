@@ -3,7 +3,6 @@
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Models\Boardlist;
-use App\Notifications\lists\UpdateNotification;
 
 new class extends Component
 {
@@ -42,6 +41,7 @@ new class extends Component
         <livewire:lists.head.title
             :class="$this->list->collapsed ? 'cursor-default pb-0.5 select-none' : ''"
             :list="$this->list"
+            :userRole="$this->userRole"
             />
 
 

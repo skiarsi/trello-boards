@@ -2,6 +2,7 @@
 
 use Livewire\Component;
 use App\Notifications\boards\BoardUpdateNotification;
+use Illuminate\Support\Facades\Auth;
 
 new class extends Component
 {
@@ -16,7 +17,8 @@ new class extends Component
                         $member->notify(new BoardUpdateNotification(
                             board : $this->board,
                             action : 'archived',
-                            message : 'Board `'.$this->board->title.'` is archived.'
+                            message : 'Board `'.$this->board->title.'` is archived.',
+                            sender: Auth::user(),
                         ));
                     });
 

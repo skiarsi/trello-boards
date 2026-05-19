@@ -4,6 +4,7 @@ use Livewire\Component;
 use Illuminate\Support\Str;
 use App\Notifications\cards\NewCardNotification;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Auth;
 
 new class extends Component
 {
@@ -32,17 +33,10 @@ new class extends Component
             new NewCardNotification(
                 list: $this->list,
                 card: $card,
-                message: ''
+                message: '',
+                sender: Auth::user(),
             )
         );
-        // $this->list->activeUsers()
-        //                 ->each(function($members) use($card){
-        //                     $members->notify(new NewCardNotification(
-        //                         list: $this->list,
-        //                         card: $card,
-        //                         message: ''
-        //                     ));
-        //                 });
 
         $this->cardtitle = '';
     }

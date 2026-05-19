@@ -6,11 +6,10 @@ use App\Models\Board;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Auth;
 
-class DeleteLabelNotification extends Notification
+
+class DeleteLabelNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -20,7 +19,8 @@ class DeleteLabelNotification extends Notification
     public function __construct(
         public Board $board,
         public string $label,
-        public string $message
+        public string $message,
+        public $sender = null
     )
     {}
 
@@ -31,7 +31,7 @@ class DeleteLabelNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        if ($notifiable->id === Auth::user()->id) {
+        if ($notifiable->id === $this->sender->id) {
             return ['broadcast'];
         }
         return ['broadcast', 'database'];
@@ -73,7 +73,7 @@ class DeleteLabelNotification extends Notification
             'board_id'    => $this->board->id,
             'board_slug'  => $this->board->slug,
             'board_title' => $this->board->title,
-            'user'        => Auth::user()->name,
+            'user'        => $this->sender->name,
             'message'     => 'Label `'.$this->label.'` for board `'.$this->board->title.'` is deleted',
         ]);
     }

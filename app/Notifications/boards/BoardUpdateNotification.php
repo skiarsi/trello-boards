@@ -6,11 +6,9 @@ use App\Models\Board;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Auth;
 
-class BoardUpdateNotification extends Notification
+class BoardUpdateNotification extends Notification  implements ShouldQueue
 {
     use Queueable;
 
@@ -20,7 +18,8 @@ class BoardUpdateNotification extends Notification
     public function __construct(
         public Board $board,
         public string $action,  // 'color_change' , 'title_changed', 'archived'
-        public string $message
+        public string $message,
+        public $sender = null
     )
     {
         //
@@ -33,7 +32,7 @@ class BoardUpdateNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        if ($notifiable->id === Auth::user()->id) {
+        if ($notifiable->id === $this->sender->id) {
             return ['broadcast'];
         }
         return ['broadcast', 'database'];
@@ -62,9 +61,9 @@ class BoardUpdateNotification extends Notification
         return [
             'toast_type'=> 'boardUpdate',
             'board_id'  => $this->board->id,
-            'user'      => Auth::user()->name,
+            'user'      => $this->sender->name,
             'url'       => route('board', $this->board->slug),
-            'message'   => 'Board updated by '.Auth::user()->name.' - '. $this->action,
+            'message'   => 'Board updated by '.$this->sender->name.' - '. $this->action,
         ];
     }
 }
