@@ -47,6 +47,12 @@ if (window.authUserId) {
                     window.Livewire.dispatch("load-count");
                 }
 
+                // ─── Archive List ──────────────────────────────────────────
+                if (notification.toast_type === "archivelist") {
+                    window.Livewire.dispatch("list-updated");
+                    window.Livewire.dispatch("load-count");
+                }
+
                 // ─── Member notifications ──────────────────────────────────
                 if (notification.toast_type === "inviteMember") {
                     window.Livewire.dispatch("member-updated");

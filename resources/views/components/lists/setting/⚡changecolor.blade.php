@@ -3,6 +3,7 @@
 use Livewire\Component;
 use App\Notifications\lists\UpdateNotification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 
 
@@ -40,14 +41,14 @@ new class extends Component
 
         $this->dispatch('list-updated');
 
-        $this->list->activeUsers()
-                ->each(function($member){
-                    $member->notify(new UpdateNotification(
-                        list: $this->list,
-                        action: 'update-list',
-                        sender: Auth::user()
-                    ));
-                });
+        Notification::send(
+            $this->list->activeUsers()->get(),
+            new UpdateNotification(
+                list: $this->list,
+                action: 'update-list',
+                sender: Auth::user()
+            ),
+        );
     }
 };
 ?>

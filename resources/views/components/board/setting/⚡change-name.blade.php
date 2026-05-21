@@ -17,14 +17,18 @@ new class extends Component
 
     // update board title
     public function updateTitle(){
-        $this->validate([
-            'title' => 'required|string|min:3|max:50'
-        ]);
+
 
         // don't update with same name
         if ($this->board->title === $this->title) {
             return;
         }
+
+        $this->validate([
+            'title' => 'required|string|min:3|max:50'
+        ]);
+
+
 
         // update on database
         $this->board->update([

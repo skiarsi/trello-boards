@@ -46,18 +46,19 @@ new class extends Component
 <div
     x-data="{
         open : false,
-
         clearclose(){
             $nextTick(()=> $refs.input.value = '');
             this.open = false
-        }
+        },
+        listId: {{ $this->list->id }}
     }"
+    @open-newcard.window="open = ($event.detail.listId === listId) ? !open : false ; $nextTick(()=> $refs.input.focus())"
     class="w-full my-2 gap-1 relative">
 
 
     <p
         x-show= "!open"
-        @click=" open = true; $nextTick(()=> $refs.input.focus())"
+        @click=" open = !open; $nextTick(()=> $refs.input.focus())"
         class="block text-center py-1 select-none cursor-pointer shadow bg-stone-100/40 hover:bg-white">New Card</p>
 
 
@@ -70,7 +71,9 @@ new class extends Component
                 placeholder="Card title..."
                 type="text"
                 x-ref="input"
-                class="w-full px-1 py-0.5 text-lg text-black bg-white border rounded border-stone-300 outline-0" />
+                @keydown.enter="$wire.createCard"
+                @keydown.escape="clearclose()"
+                class="w-full px-1 py-0.5 text-lg text-black bg-white border rounded border-white outline-0" />
                 @error('cardtitle') <span class="text-red-700 text-sm italic">{{ $message }}</span> @enderror
             <div class="flex gap-1 items-start py-0.5">
                 <button

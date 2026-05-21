@@ -11,7 +11,8 @@ new class extends Component
     public $listId;
     public $userRole;
 
-    #[On('list-updated')]
+    // #[On('list-updated')]
+    #[On('card-created')]
     public function mount(){
         $this->listId = $this->list->id;
     }
@@ -32,20 +33,21 @@ new class extends Component
         x-data="{
             collapsed : @js($this->list->collapsed)
         }"
-        class="{{ $this->list->collapsed ? 'w-36' : 'w-68' }} shrink-0 pt-2 shadow pb-0 px-2 flex flex-col rounded-sm"
+        class="{{ $this->list->collapsed ? 'w-36' : 'w-68' }} shrink-0 pt-2 pb-2 shadow px-2 flex flex-col rounded-sm"
         style="background:{{ $this->list->color }}"
     >
 
     <div class="w-full flex justify-between bg-white px-2 py-1 rounded-lg {{ $list->cards->count() === 0 ? 'mb-2' : '' }}">
         {{-- list title component --}}
         <livewire:lists.head.title
+            :collapsed="$this->list->collapsed"
             :class="$this->list->collapsed ? 'cursor-default pb-0.5 select-none' : ''"
             :list="$this->list"
             :userRole="$this->userRole"
             />
 
 
-        <div class="flex gap-2">
+        <div class="flex gap-2 ">
             {{-- collapse component --}}
             <livewire:lists.head.collapse :list="$this->list" :collapse="$this->list->collapsed" />
 

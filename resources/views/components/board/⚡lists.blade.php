@@ -16,9 +16,10 @@ new class extends Component
     }
 
     #[On('list-created')]
+    #[On('list-updated')]
     public function refreshLists()
     {
-        $this->boardlists = $this->board->lists()->get();
+        $this->boardlists = $this->board->lists()->where('archived', 0)->get();
     }
 };
 ?>

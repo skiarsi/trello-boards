@@ -59,7 +59,16 @@ new class extends Component
 ?>
 
 <div
-    x-data="{open : false, listId: {{ $this->list->id }}}"
+    x-data="
+        {
+            open : false,
+            listId: {{ $this->list->id }},
+            clearclose(){
+                this.open = false,
+                $refs.inputLabel.value = ''
+            }
+        }
+        "
     @open-addlistlabel.window= "
                                     open = ($event.detail.listId === listId);
                                     $nextTick(() => $refs.inputLabel.focus());
@@ -68,7 +77,7 @@ new class extends Component
     >
     <div
         x-show = "open"
-        @click.outside="open = false"
+        @click.outside="clearclose()"
         class="flex flex-col gap-1 py-2 bg-white/40 px-3 rounded-lg my-1">
             <div class="w-full grid grid-cols-6 gap-1">
                 @foreach ($colors as $color)
@@ -87,6 +96,8 @@ new class extends Component
                     <input
                         wire:model="title"
                         type="text"
+                        @keydown.enter="$wire.createLabel"
+                        @keydown.escape="clearclose()"
                         x-ref="inputLabel"
                         class=" bg-white border border-gray-400 text-black py-0.5 px-2 text-sm w-full rounded-sm"
                         placeholder="Label title..." />
@@ -99,7 +110,7 @@ new class extends Component
 
             <div class="flex gap-1">
                 <button wire:click="createLabel" class="bg-sky-700 text-white py-0 px-4 text-sm cursor-pointer">create</button>
-                <button @click="open = false" class="text-black px-4 text-sm cursor-pointer">cancel</button>
+                <button @click="clearclose()" class="text-black px-4 text-sm cursor-pointer">cancel</button>
             </div>
     </div>
 </div>

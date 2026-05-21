@@ -36,7 +36,7 @@ new class extends Component
             class="select-none w-full h-2 rounded-full shadow"
             style="background-color:{{ $this->label->color }}"
                 @if($this->userRole !== 'viewer')
-                    @dblclick="if (confirm('Are you sure?')) $wire.deletelabel('{{ $label->id }}')"
+                    @dblclick="if (confirm('Are you sure you want to delete this label?')) $wire.deletelabel('{{ $label->id }}')"
                 @endif
             >
                 &nbsp;
