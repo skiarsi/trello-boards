@@ -11,8 +11,6 @@ new class extends Component
     public $listId;
     public $userRole;
 
-    // #[On('list-updated')]
-    #[On('card-created')]
     public function mount(){
         $this->listId = $this->list->id;
     }
@@ -38,6 +36,8 @@ new class extends Component
     >
 
     <div class="w-full flex justify-between bg-white px-2 py-1 rounded-lg {{ $list->cards->count() === 0 ? 'mb-2' : '' }}">
+
+        <div class="flex flex-col w-full">
         {{-- list title component --}}
         <livewire:lists.head.title
             :collapsed="$this->list->collapsed"
@@ -46,6 +46,9 @@ new class extends Component
             :userRole="$this->userRole"
             />
 
+        <livewire:lists.head.labels :list="$this->list" :userRole="$userRole" />
+
+        </div>
 
         <div class="flex gap-2 ">
             {{-- collapse component --}}
@@ -69,11 +72,7 @@ new class extends Component
 
             @endif
 
-            @if ($list->cards->count() > 0)
-                <hr class="border border-gray-300 mx-auto my-4 w-10/12" />
-
-                <livewire:cards.allcards :board="$this->board" :list="$list" :userRole="$userRole" />
-            @endif
+            <livewire:cards.allcards :board="$this->board" :list="$list" :userRole="$userRole" lazy />
 
         </div>
     @endif

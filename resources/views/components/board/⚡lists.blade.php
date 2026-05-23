@@ -19,7 +19,7 @@ new class extends Component
     #[On('list-updated')]
     public function refreshLists()
     {
-        $this->boardlists = $this->board->lists()->where('archived', 0)->get();
+        $this->boardlists = $this->board->lists()->with(['labels'])->where('archived', 0)->get();
     }
 };
 ?>

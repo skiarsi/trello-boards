@@ -26,10 +26,10 @@ new class extends Component
             'title' => $validated['cardtitle']
         ]);
 
-        $this->dispatch('card-created', listId: $this->list->id);
+
 
         Notification::send(
-            $this->list->activeUsers()->get(),
+            $this->board->activeUsers()->get(),
             new NewCardNotification(
                 list: $this->list,
                 card: $card,
@@ -53,7 +53,7 @@ new class extends Component
         listId: {{ $this->list->id }}
     }"
     @open-newcard.window="open = ($event.detail.listId === listId) ? !open : false ; $nextTick(()=> $refs.input.focus())"
-    class="w-full my-2 gap-1 relative">
+    class="w-full mt-2 mb-0 gap-1 relative">
 
 
     <p
@@ -65,7 +65,7 @@ new class extends Component
     <div
         x-show="open"
         @click.outside=" open = false; clearclose() "
-        class="w-full flex flex-col gap-1">
+        class="w-full flex flex-col gap-1 px-2 py-2 bg-black/10">
             <input
                 wire:model="cardtitle"
                 placeholder="Card title..."
@@ -73,12 +73,18 @@ new class extends Component
                 x-ref="input"
                 @keydown.enter="$wire.createCard"
                 @keydown.escape="clearclose()"
-                class="w-full px-1 py-0.5 text-lg text-black bg-white border rounded border-white outline-0" />
+                class="w-full px-1 py-0.5 text-lg text-black bg-white border border-white outline-0" />
                 @error('cardtitle') <span class="text-red-700 text-sm italic">{{ $message }}</span> @enderror
             <div class="flex gap-1 items-start py-0.5">
                 <button
                     wire:click="createCard"
-                    class="py-0 px-4 bg-sky-600 text-white text-sm shadow">Create</button>
+                    wire:loading.attr="disabled"
+                    class="py-0 px-4 bg-sky-600 text-white text-sm shadow">
+
+                    <span wire:loading.remove wire:target="createCard">Create</span>
+                    <span wire:loading wire:target="createCard">...</span>
+
+                </button>
                 <button @click="clearclose()" class="py-0 px-4 bg-stone-100 text-black text-sm shadow">Cancel</button>
             </div>
     </div>

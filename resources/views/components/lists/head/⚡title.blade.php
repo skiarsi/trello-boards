@@ -13,18 +13,14 @@ new class extends Component
     public $collapsed;
 
     public $list;
-    public $labels = [];
     public $userRole;
     public $class;
 
     public $title;
     public $show = false;
 
-    #[On('listlable-updated')]
     #[On('list-updated')]
     public function mount(){
-        $this->labels = Boardlist::where('id', $this->list->id)
-                                    ->with(['labels'])->get();
 
         $this->title = $this->list->title;
     }
@@ -104,16 +100,4 @@ new class extends Component
             wire:model.lazy="title"
             class="w-11/12 mb-1 bg-stone-200 outline-0 text-lg text-black px-1 rounded-sm border border-stone-300" />
     </div>
-
-    @if ($this->labels)
-        <div class="w-full grid grid-cols-6 gap-1 pb-1">
-            @foreach ($this->list->labels as $label)
-                <livewire:lists.head.labels
-                                :list="$this->list"
-                                :userRole="$this->userRole"
-                                wire:key="label-{{ $label->id }}"
-                                :label="$label" />
-            @endforeach
-        </div>
-    @endif
 </div>
