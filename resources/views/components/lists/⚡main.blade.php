@@ -72,7 +72,7 @@ new class extends Component
 
             @endif
 
-            <livewire:cards.allcards :board="$this->board" :list="$list" :userRole="$userRole" lazy />
+            <livewire:cards.allcards :board="$this->board" :list="$list" :userRole="$userRole" />
 
         </div>
     @endif

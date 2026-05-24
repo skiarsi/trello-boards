@@ -15,15 +15,19 @@ class Boardpage extends Component
     public Board $board;
     public $user;
 
+    // تعریف یک پراپرتی برای نگهداری اطلاعات ممبر لود شده
+    protected $currentBoardMember;
+
     public function boot(){
         $user = Auth::user();
 
         if ($this->board && $this->board->owner_id !== $user->id) {
-            $member = $this->board->users()
+            // کوئری را اینجا می‌زنیم و نتیجه را در یک پراپرتی ذخیره می‌کنیم
+            $this->currentBoardMember = $this->board->users()
                         ->where('user_id', $user->id)
                         ->first();
 
-            if (!$member || $member->pivot->status !== 'accepted') {
+            if (!$this->currentBoardMember || $this->currentBoardMember->pivot->status !== 'accepted') {
                 $this->redirect(route('index'));
             }
         }
@@ -40,9 +44,18 @@ class Boardpage extends Component
 
     public function render()
     {
+        // تعیین نقش کاربر بدون اجرای کوئری مجدد
+        $userRole = null;
+
+        if ($this->board->owner_id === Auth::id()) {
+            $userRole = 'owner'; // اگر صاحب بورد بود مستقیم ست شود
+        } elseif ($this->currentBoardMember) {
+            $userRole = $this->currentBoardMember->pivot->role; // استفاده از داده کش شده در متد boot
+        }
+
         return view('livewire.pages.boardpage',[
             'board' => $this->board,
-            'userRole'  => $this->board->currentUserRole()
+            'userRole'  => $userRole
         ])->title($this->board->title);
     }
 }

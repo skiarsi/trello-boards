@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Card extends Model
 {
@@ -10,6 +11,11 @@ class Card extends Model
 
     public function boardlist(){
         return $this->belongsTo(Boardlist::class);
+    }
+
+    public function comments(): MorphMany
+    {
+        return $this->morphMany(Comment::class,'commentable');
     }
 
 }

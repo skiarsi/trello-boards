@@ -11,6 +11,10 @@ new class extends Component
     public $board;
     public $mode = "show";
 
+    public function mount(){
+        $this->labels = $this->board->labels;
+    }
+
     #[On('label-created')]
     #[On('label-deleted')]
     public function refreshLabels(){
@@ -18,21 +22,22 @@ new class extends Component
     }
 
     public function deleteLabel($labelid, $labelTitle){
-
         $label = $this->board->labels()->find($labelid);
-        $label->delete();
+        if ($label) {
+            $label->delete();
+        }
 
         $this->dispatch('label-deleted');
 
         $this->board->activeUsers()
-                        ->each(function($members) use ($labelTitle){
-                            $members->notify(new DeleteLabelNotification(
-                                board: $this->board,
-                                label: $labelTitle,
-                                message: '',
-                                sender: Auth::user()
-                            ));
-                        });
+            ->each(function($members) use ($labelTitle){
+                $members->notify(new DeleteLabelNotification(
+                    board: $this->board,
+                    label: $labelTitle,
+                    message: '',
+                    sender: Auth::user()
+                ));
+            });
     }
 };
 ?>
@@ -43,7 +48,9 @@ new class extends Component
         'grid-cols-2' => $this->mode === 'manage',
         'grid-cols-6' => $this->mode !== 'manage',
     ]) class="w-full">
-    @if ($this->board->labels->count() > 0)
+
+    {{-- اصلاح شرط: استفاده از متغیر داخلی کامپوننت به جای رابطه مستقیم بورد --}}
+    @if (count($labels) > 0)
         @foreach ($labels as $label)
             <div
                 class="flex gap-2 justify items-start py-1 ps-1"

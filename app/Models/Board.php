@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Auth;
 
 class Board extends Model
@@ -52,6 +53,10 @@ class Board extends Model
 
     public function labels(){
         return $this->morphMany(Label::class,'labelable');
+    }
+
+    public function comments(): MorphMany{
+        return $this->morphMany(Comment::class, 'commentable');
     }
 
 

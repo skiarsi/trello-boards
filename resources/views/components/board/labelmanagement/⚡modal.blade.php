@@ -6,12 +6,17 @@ use Livewire\Attributes\On;
 new class extends Component
 {
     public $board;
-    public $labels;
+
+    public function mount($board){
+        $this->board = $board;
+    }
+
 
     #[On('label-created')]
     #[On('label-deleted')]
-    public function mount(){
-        $this->labels = $this->board->load(['labels']);
+    public function refreshBoard()
+    {
+        $this->board->load('labels');
     }
 };
 ?>
@@ -36,7 +41,7 @@ new class extends Component
 
 
                 <div class="w-full text-xl text-gray-700 select-none font-light">Labels</div>
-                <livewire:board.labelmanagement.labels mode="manage" :labels="$this->board->labels" :board="$board" />
+                <livewire:board.labelmanagement.labels mode="manage" :board="$board" />
 
 
                 <livewire:board.labelmanagement.newlabel-form :board="$board" />
