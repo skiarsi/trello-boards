@@ -67,6 +67,10 @@ new class extends Component
     class="w-68 shrink-0 flex flex-col cursor-pointer select-none"
 >
 
+    {{-- @placeholder
+        <div class="animate-pulse h-9 w-72 rounded-0 bg-gray-800/30"></div>
+    @endplaceholder --}}
+
     {{-- New label button --}}
     <div
         @click="open = true; $nextTick(() => $refs.listInput.focus())"

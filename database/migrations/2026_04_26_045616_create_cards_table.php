@@ -20,7 +20,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->string('title');
-            $table->string('color')->nullable()->default('#fafafa');
+            $table->string('color')->nullable();
             $table->text('description')->nullable();
             $table->integer('position')->default(0);
             $table->timestamps();

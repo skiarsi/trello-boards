@@ -4,6 +4,7 @@ use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Notifications\boards\DeleteLabelNotification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 new class extends Component
 {
@@ -29,15 +30,15 @@ new class extends Component
 
         $this->dispatch('label-deleted');
 
-        $this->board->activeUsers()
-            ->each(function($members) use ($labelTitle){
-                $members->notify(new DeleteLabelNotification(
-                    board: $this->board,
-                    label: $labelTitle,
-                    message: '',
-                    sender: Auth::user()
-                ));
-            });
+        Notification::send(
+            $this->board->activeUsers()->get(),
+            new NewCardNotification(
+                board: $this->board,
+                label: $labelTitle,
+                message: '',
+                sender: Auth::user()
+            )
+        );
     }
 };
 ?>

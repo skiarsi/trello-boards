@@ -35,7 +35,7 @@ new class extends Component
                     :userRole="$userRole"
                     :board="$this->board"
                     :list="$list"
-                    wire:key="{{ 'list-'.$list->id }}" />
+                    wire:key="list-{{ 'list-'.$list->id }}" />
     @endforeach
 
 

@@ -6,6 +6,7 @@ use Livewire\Attributes\On;
 use App\Notifications\lists\UpdateNotification;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Attributes\Reactive;
+use Illuminate\Support\Facades\Auth;
 
 new class extends Component
 {

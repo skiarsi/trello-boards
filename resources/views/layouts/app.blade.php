@@ -10,6 +10,11 @@
             </script>
         @endauth
 
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        {{-- EasyMDE --}}
+        <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+        <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles

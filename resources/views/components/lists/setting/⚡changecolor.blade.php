@@ -45,7 +45,7 @@ new class extends Component
             $this->list->activeUsers()->get(),
             new UpdateNotification(
                 list: $this->list,
-                action: 'update-list',
+                action: 'updatelist',
                 sender: Auth::user()
             ),
         );
@@ -56,6 +56,10 @@ new class extends Component
 <div class="grid grid-cols-5 w-full gap-1">
     @foreach ($this->colors as $color)
         <div
+            @click="
+                $dispatch('close-menu')
+            "
+            wire:key="listcolor-{{ $color }}"
             wire:click="updatecolor('{{ $color }}')"
             class="w-full py-1 cursor-pointer opacity-80 hover:opacity-100"
             style="background-color:{{ $color }}">&nbsp;</div>

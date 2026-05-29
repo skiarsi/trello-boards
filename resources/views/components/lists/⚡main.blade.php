@@ -7,12 +7,15 @@ use App\Models\Boardlist;
 new class extends Component
 {
     public $list;
+    public $color;
     public $board;
     public $listId;
     public $userRole;
 
+
     public function mount(){
         $this->listId = $this->list->id;
+        $this->getColor();
     }
 
     public function collapsing(){
@@ -24,6 +27,11 @@ new class extends Component
 
         $this->list = $list->fresh();
     }
+
+    #[On('list-updated')]
+    public function getColor(){
+        $this->color = $this->list->color;
+    }
 };
 ?>
 
@@ -32,8 +40,12 @@ new class extends Component
             collapsed : @js($this->list->collapsed)
         }"
         class="{{ $this->list->collapsed ? 'w-36' : 'w-68' }} shrink-0 pt-2 pb-2 shadow px-2 flex flex-col rounded-sm"
-        style="background:{{ $this->list->color }}"
+        style="background:{{ $this->color }}"
     >
+
+    {{-- @placeholder
+        <div class="animate-pulse w-68 rounded-0 bg-gray-800/30" style="height:{{ rand(13, 22) }}rem"></div>
+    @endplaceholder --}}
 
     <div class="w-full flex justify-between bg-white px-2 py-1 rounded-lg {{ $list->cards->count() === 0 ? 'mb-2' : '' }}">
 

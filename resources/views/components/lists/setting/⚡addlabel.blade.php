@@ -82,6 +82,7 @@ new class extends Component
             <div class="w-full grid grid-cols-6 gap-1">
                 @foreach ($colors as $color)
                     <div
+                        wire:key="listslabelcolor-{{ $color }}"
                         wire:click="updatecolor('{{ $color }}')"
                         class="w-full h-4 py-1 cursor-pointer opacity-80 shadow hover:opacity-100"
                         style="background-color:{{ $color }}">&nbsp;</div>

@@ -13,6 +13,7 @@ new class extends Component
     x-data="{
         show : false
     }"
+    @close-menu.window="show = false",
     class="relative w-5 select-none">
 
     <x-heroicon-c-ellipsis-vertical

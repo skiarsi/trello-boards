@@ -67,7 +67,7 @@ class UpdateNotification extends Notification implements ShouldQueue
     {
         return new BroadcastMessage([
             'toast_type'=> 'updatelist',
-            'action'    => $this->action,
+            'action'    => 'updatelist',
             'message'   => 'list updated by: `'. $this->sender->name
         ]);
     }

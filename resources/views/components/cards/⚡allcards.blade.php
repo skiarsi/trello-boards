@@ -8,10 +8,11 @@ use App\Models\Card;
 new class extends Component
 {
 
-    public $list;
+    public Boardlist $list;
     public $cards=[];
     public $board;
     public $userRole;
+    public $cardlabels = [];
 
     public $checked = false;
 
@@ -20,12 +21,16 @@ new class extends Component
     public function refreshCards($listId)
     {
         if($listId === $this->list->id){
-            $this->list = $this->list->fresh(['cards']);
+            $this->list = $this->list->fresh(['cards.labels']);
         }
     }
 
     public function mount(){
-        $this->list = $this->list->load('cards');
+        $this->list = $this->list->load('cards.labels');
+    }
+
+    public function loadcardlabels(){
+
     }
 };
 ?>
@@ -37,20 +42,23 @@ new class extends Component
             <div
                 wire:key="card-{{ $card->id }}"
                 x-data="{ isChecked: false }"
-                class="text-lg w-full py-1 rounded-md px-2 shadow cursor-pointer opacity-90 hover:opacity-100 flex group/card"
-                style="background:{{ $card->color }}">
+                class="text-lg w-full py-1 rounded-md px-2 shadow cursor-pointer opacity-90 hover:opacity-100 flex flex-col group/card"
+                style="background:#fafafa; {{ $card->color ? 'border-top: 2rem solid '.$card->color.'' : ''  }}">
 
-                @if ($this->userRole === "owner")
-                    <x-checkbox
-                        wire:model="item4"
-                        x-model="isChecked"
-                        ::class="isChecked ? 'opacity-100 visible' : 'opacity-0 invisible group-hover/card:opacity-100 group-hover/card:visible'"
-                        class="self-start w-4 h-4 p-0.5 mt-0.5 transition-all duration-300">
-                    </x-checkbox>
-                @endif
+                <div class="w-full flex ">
+                    @if ($this->userRole === "owner")
+                        <x-checkbox
+                            wire:key="check-{{ $card->id }}"
+                            wire:model="item4"
+                            x-model="isChecked"
+                            ::class="isChecked ? 'opacity-100 visible' : 'opacity-0 invisible group-hover/card:opacity-100 group-hover/card:visible'"
+                            class="self-start w-4 h-4 p-0.5 mt-0.5 transition-all duration-300">
+                        </x-checkbox>
+                    @endif
 
-                @include('components.cards.onecard', ['card' => $card])
-
+                    @include('components.cards.onecard', ['card' => $card, 'list'=>$this->list, 'userRole'=>$this->userRole])
+                </div>
+                <livewire:cards.labels.view :card="$card" />
             </div>
         @endforeach
     @endif

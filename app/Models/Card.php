@@ -18,4 +18,9 @@ class Card extends Model
         return $this->morphMany(Comment::class,'commentable');
     }
 
+    public function labels(): MorphMany
+    {
+        return $this->morphMany(Label::class, 'labelable');
+    }
+
 }

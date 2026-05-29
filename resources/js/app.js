@@ -47,7 +47,20 @@ if (window.authUserId) {
                     window.Livewire.dispatch("load-count");
                 }
 
-                // ─── Archive List ──────────────────────────────────────────
+                // ─── Card notifications ─────────────────────────────────────
+                if (notification.toast_type === "comment-new") {
+                    window.Livewire.dispatch("comment_added");
+                    window.Livewire.dispatch("load-count");
+                }
+
+                // ─── card label update ──────────────────────────────────────
+                if (notification.action === "card-label-updated") {
+                    window.Livewire.dispatch(
+                        `card-label-updated-${notification.card_id}`,
+                    );
+                }
+
+                // ─── Archive List ───────────────────────────────────────────
                 if (notification.toast_type === "archivelist") {
                     window.Livewire.dispatch("list-updated");
                     window.Livewire.dispatch("load-count");
@@ -86,7 +99,7 @@ if (window.authUserId) {
                     });
                 }
 
-                if (notification.action === "update-list") {
+                if (notification.action === "updatelist") {
                     window.Livewire.dispatch("list-updated");
                     window.Livewire.dispatch("load-count");
                 }

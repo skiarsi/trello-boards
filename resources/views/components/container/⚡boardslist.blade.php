@@ -24,6 +24,6 @@ new class extends Component
 
 
 
-    <livewire:board.lists :userRole="$userRole" :board="$board" />
+    <livewire:board.lists :userRole="$userRole" :board="$board"  />
 
 </div>

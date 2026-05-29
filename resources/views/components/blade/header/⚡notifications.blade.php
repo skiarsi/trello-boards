@@ -110,7 +110,7 @@ new class extends Component
             <div class="flex flex-col gap-2 w-full">
                 @if (auth()->user()->notifications->count() > 0)
                     @foreach(auth()->user()->notifications->take(7) as $notification)
-                        <div class="w-full">
+                        <div class="w-full" wire:key="notification-{{ $notification->id }}">
                             <div class="ps-1 block text-base/1 {{ $notification->read_at ? 'opacity-40' : '' }}">
                                 <p class="text-xs text-gray-600">{{ $notification->data['message'] }}</p>
                                 <div class="flex gap-2">

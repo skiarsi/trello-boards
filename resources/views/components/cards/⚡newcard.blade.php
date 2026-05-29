@@ -23,7 +23,14 @@ new class extends Component
 
         $card = $this->list->cards()->create([
             'slug' => Str::slug($validated['cardtitle'] . '-' . now()->toDateTimeString()),
-            'title' => $validated['cardtitle']
+            'title' => $validated['cardtitle'],
+            'color' => null
+        ]);
+
+        // first comment for card - initialize comment
+        $card->comments()->create([
+            'body' => Auth::user()->name.' added this card to `'.$this->list->title.'`',
+            'user_id' => Auth::user()->id
         ]);
 
 
