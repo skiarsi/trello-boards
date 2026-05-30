@@ -16,7 +16,11 @@
 
             <div class="flex w-full">
                 <div class="flex-1 py-3 px-2">
-                    <livewire:cards.content.bar :userRole="$userRole" :card="$card" :list="$list" />
+                    @if ($userRole !== 'viewer')
+                        <livewire:cards.content.bar :userRole="$userRole" :card="$card" :list="$list" />
+                    @endif
+                    <livewire:cards.labels.manage :list="$list" :card="$card" :userRole="$userRole" />
+
                     <livewire:cards.content.description :card="$card" :list="$list" />
                 </div>
                 <div class="w-5/12 py-3 border-l border-gray-200">

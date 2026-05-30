@@ -21,10 +21,10 @@ new class extends Component
     class="flex flex-col gap-1 w-full py-4">
         <div class="flex gap-2 w-full">
             <livewire:cards.content.addcontent />
-            <x-button label="Add label" icon="o-tag" />
+
+            <livewire:cards.labels.addlable :list="$this->list" :card="$this->card" />
+
             <x-button label="Add Date" icon="o-calendar-days" />
             <x-button label="Add Checklist" icon="o-list-bullet" />
         </div>
-
-        <livewire:cards.labels.manage :list="$list" :card="$this->card" :userRole="$this->userRole" />
 </div>
