@@ -20,19 +20,31 @@ new class extends Component
 <div class="w-full" >
 
     <div onclick="document.getElementById('modal-{{ $this->card->id }}').showModal()" class="flex-1 block select-none">
-        @if (($this->card->due_date) && ($this->card->due_date <= now()->today()->toDateString()))
-            <div class="flex gap-1 items-start">
-                <x-icon name="clock" class="h-8 text-red-800" />
-                <div class="flex flex-col">
-                    <span class="">{{ Str::limit($this->card->title, 16) }}</span>
-                    <span class="italic text-xs text-red-500 -mt-1">due date</span>
+        @if ($this->card->due_date)
+            @if ($card->due_date->isPast() || $card->due_date->isToday())
+                <div class="flex gap-1 items-start">
+                    <x-icon name="clock" class="h-8 text-red-800" />
+                    <div class="flex flex-col">
+                        <span class="">{{ Str::limit($this->card->title, 16) }}</span>
+                        <span class="italic text-xs text-red-500 -mt-1">Due date</span>
+                    </div>
                 </div>
-            </div>
+            @elseif ($card->due_date->isTomorrow())
+                <div class="flex gap-1 items-start">
+                    <x-icon name="clock" class="h-8 text-yellow-600" />
+                    <div class="flex flex-col">
+                        <span class="">{{ Str::limit($this->card->title, 16) }}</span>
+                        <span class="italic text-xs text-yellow-600 -mt-1">Due date is tomorrow</span>
+                    </div>
+                </div>
+            @else
+                <div class="flex gap-1 items-center">
+                    <x-icon name="clock" class="h-5" />
+                    <span class="">{{ Str::limit($this->card->title, 16) }}</span>
+                </div>
+            @endif
         @else
-            <div class="flex gap-1 items-center">
-                <x-icon name="clock" class="h-5" />
-                <span class="">{{ Str::limit($this->card->title, 16) }}</span>
-            </div>
+            <span class="">{{ Str::limit($this->card->title, 16) }}</span>
         @endif
     </div>
 

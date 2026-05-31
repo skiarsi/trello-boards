@@ -39,7 +39,7 @@ new class extends Component
             'due_date' => $enddate
         ]);
 
-        // $this->cardDateModal = false;
+        $this->cardDateModal = false;
         $this->dispatch('card-date-updated-'.$this->card->id);
 
         $requestData = [

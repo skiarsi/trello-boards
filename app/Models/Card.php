@@ -23,4 +23,13 @@ class Card extends Model
         return $this->morphMany(Label::class, 'labelable');
     }
 
+
+
+
+
+
+    protected $casts = [
+        'due_date' => 'datetime',
+    ];
+
 }
