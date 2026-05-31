@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Notification;
 use App\Notifications\cards\labels\NotificationCreatelabel;
 use Livewire\Attributes\On;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 new class extends Component
 {
@@ -43,17 +44,17 @@ new class extends Component
 
         $this->dispatch('card-label-updated-'.$this->card->id);
         $requestData = [
-                'user_id'   => Auth::id(),
-                'user_name' => Auth::user()->name
-            ];
+            'user_id'   => Auth::id(),
+            'user_name' => Auth::user()->name
+        ];
 
-            Notification::send(
-                $this->list->activeUsers()->get(),
-                new NotificationCreatelabel(
-                    requestData   : $requestData,
-                    card          : $this->card
-                )
-            );
+        Notification::send(
+            $this->list->activeUsers()->get(),
+            new NotificationCreatelabel(
+                requestData   : $requestData,
+                card          : $this->card
+            )
+        );
 
         $this->labeltext = '';
         $this->cardLabelModal = false;
@@ -66,7 +67,7 @@ new class extends Component
 <div>
     <x-button label="Add label" icon="o-tag" wire:click="showModal" />
 
-    <x-modal wire:model="cardLabelModal" title="Hey" class="backdrop-blur">
+    <x-modal wire:model="cardLabelModal" title="Add new label" class="backdrop-blur">
 
         <div class="w-full py-3 px-2" style="background: {{ $this->selectedColor }}">
             <input

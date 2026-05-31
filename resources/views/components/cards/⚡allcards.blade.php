@@ -4,6 +4,8 @@ use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Models\Boardlist;
 use App\Models\Card;
+use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 
 new class extends Component
 {
@@ -43,22 +45,32 @@ new class extends Component
                 wire:key="card-{{ $card->id }}"
                 x-data="{ isChecked: false }"
                 class="text-lg w-full py-1 rounded-md px-2 shadow cursor-pointer opacity-90 hover:opacity-100 flex flex-col group/card"
-                style="background:#fafafa; {{ $card->color ? 'border-top: 2rem solid '.$card->color.'' : ''  }}">
+                style="background:#fafafa; {{ $card->color ? 'border-top: 2rem solid '.$card->color.'' : '' }}">
 
-                <div class="w-full flex ">
+                <div class="w-full flex items-start gap-0">
                     @if ($this->userRole === "owner")
                         <x-checkbox
                             wire:key="check-{{ $card->id }}"
                             wire:model="item4"
                             x-model="isChecked"
-                            ::class="isChecked ? 'opacity-100 visible' : 'opacity-0 invisible group-hover/card:opacity-100 group-hover/card:visible'"
-                            class="self-start w-4 h-4 p-0.5 mt-0.5 transition-all duration-300">
+                            class="self-start w-5 h-5 p-0.5 transition-all duration-300 hidden group-hover/card:block"
+                            ::class="{ 'block!': isChecked }">
                         </x-checkbox>
                     @endif
 
-                    @include('components.cards.onecard', ['card' => $card, 'list'=>$this->list, 'userRole'=>$this->userRole])
+                    <div class="flex-1 min-w-0 px-0">
+                        <livewire:cards.onecard
+                            wire:key="item-card-{{ $card->slug }}"
+                            :card="$card"
+                            :list="$this->list"
+                            :userRole="$this->userRole" />
+
+                            <livewire:cards.labels.view :card="$card" />
+                    </div>
+
+
                 </div>
-                <livewire:cards.labels.view :card="$card" />
+
             </div>
         @endforeach
     @endif

@@ -9,7 +9,7 @@ new class extends Component
 ?>
 
 <div class="w-full">
-    <label for="description" class="text-sm">Description</label>
+    <label for="description" class="text-sm select-none">Description</label>
     <textarea
         id="description"
         placeholder="Add description..."

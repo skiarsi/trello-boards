@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Card extends Model
 {
-    protected $fillable = ['list_id','slug','title','description','position','color'];
+    protected $fillable = ['list_id','slug','title','description','position','color','due_date'];
 
     public function boardlist(){
         return $this->belongsTo(Boardlist::class);

@@ -20,7 +20,11 @@ new class extends Component
                 title="Labels"
                 class="w-60"
                 @click="$wire.dispatch('show-card-label-modal')" />
-            <x-menu-item icon="o-calendar-days" title="Date" class="w-60" />
+            <x-menu-item
+                icon="o-calendar-days"
+                title="Date"
+                class="w-60"
+                @click="$wire.dispatch('show-card-date-modal')" />
             <x-menu-item icon="o-list-bullet" title="Checklist" class="w-60" />
         </x-dropdown>
 </div>
