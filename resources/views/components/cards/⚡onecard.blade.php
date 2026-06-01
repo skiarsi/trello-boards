@@ -12,6 +12,7 @@ new class extends Component
     #[On('card-label-updated-{card.id}')]
     #[On('card-date-updated-{card.id}')]
     public function cardRefresh(){
+        $this->card = $this->card->fresh();
     }
 
 };
@@ -21,7 +22,7 @@ new class extends Component
 
     <div onclick="document.getElementById('modal-{{ $this->card->id }}').showModal()" class="flex-1 block select-none">
         @if ($this->card->due_date)
-            @if ($card->due_date->isPast() || $card->due_date->isToday())
+            @if ($this->card->due_date->isPast() || $this->card->due_date->isToday())
                 <div class="flex gap-1 items-start">
                     <x-icon name="clock" class="h-8 text-red-800" />
                     <div class="flex flex-col">
@@ -29,7 +30,7 @@ new class extends Component
                         <span class="italic text-xs text-red-500 -mt-1">Due date</span>
                     </div>
                 </div>
-            @elseif ($card->due_date->isTomorrow())
+            @elseif ($this->card->due_date->isTomorrow())
                 <div class="flex gap-1 items-start">
                     <x-icon name="clock" class="h-8 text-yellow-600" />
                     <div class="flex flex-col">
@@ -73,7 +74,7 @@ new class extends Component
                 </div>
                 <div class="w-5/12 py-3 border-l border-gray-200">
                     <livewire:cards.comments.newcomment :card="$this->card" :list="$this->list" />
-                    {{-- <livewire:cards.comments.allcomments :card="$card" /> --}}
+                    {{-- <livewire:cards.comments.allcomments :card="$this->card" /> --}}
                 </div>
             </div>
         </div>

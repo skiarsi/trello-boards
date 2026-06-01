@@ -23,13 +23,18 @@ class Card extends Model
         return $this->morphMany(Label::class, 'labelable');
     }
 
+    public function items()
+    {
+        return $this->hasMany(CardItem::class)->latest();
+    }
+
 
 
 
 
 
     protected $casts = [
-        'due_date' => 'datetime',
+        'due_date' => 'date',
     ];
 
 }

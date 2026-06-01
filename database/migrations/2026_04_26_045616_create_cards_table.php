@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('color')->nullable();
             $table->text('description')->nullable();
             $table->integer('position')->default(0);
+            $table->boolean('is_done')->default(false);
 
             $table->timestamp('due_date')->nullable();
 
