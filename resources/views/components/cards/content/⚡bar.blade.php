@@ -26,6 +26,6 @@ new class extends Component
 
             <livewire:cards.dates.add-date :list="$this->list" :card="$this->card" />
 
-            <x-button label="Add Checklist" icon="o-list-bullet" />
+            <livewire:cards.checklist.addchecklist :list="$this->list" :card="$this->card" />
         </div>
 </div>

@@ -11,20 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('card_items', function (Blueprint $table) {
+        Schema::create('checklists', function (Blueprint $table) {
             $table->id();
             $table->foreignId('card_id')->constrained()->cascadeOnDelete();
             $table->string('title');
-
-            $table->boolean('is_completed')->default(false);
-
-            // user that finish the task
-            $table->foreignId('completed_by_id')
-                ->nullable()
-                ->constrained('users')
-                ->nullOnDelete();
-
-            $table->timestamp('completed_at')->nullable();
             $table->timestamps();
         });
     }
@@ -34,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('card_items');
+        Schema::dropIfExists('checklists');
     }
 };

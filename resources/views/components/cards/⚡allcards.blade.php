@@ -11,7 +11,6 @@ new class extends Component
 {
 
     public Boardlist $list;
-    public $cards=[];
     public $board;
     public $userRole;
     public $cardlabels = [];
@@ -23,12 +22,15 @@ new class extends Component
     public function refreshCards($listId)
     {
         if($listId === $this->list->id){
-            $this->list = $this->list->fresh(['cards.labels']);
+            $this->list = $this->list->fresh([
+                                                'cards.labels',
+                                                'cards.checklists.items'
+                                            ]);
         }
     }
 
     public function mount(){
-        $this->list = $this->list->load('cards.labels');
+        $this->list = $this->list->load('cards.labels','cards.checklists.items');
     }
 
     public function loadcardlabels(){
@@ -65,7 +67,7 @@ new class extends Component
                             :list="$this->list"
                             :userRole="$this->userRole" />
 
-                            <livewire:cards.labels.view :card="$card" />
+                        <livewire:cards.labels.view :card="$card" />
                     </div>
 
 

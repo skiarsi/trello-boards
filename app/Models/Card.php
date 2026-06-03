@@ -23,11 +23,10 @@ class Card extends Model
         return $this->morphMany(Label::class, 'labelable');
     }
 
-    public function items()
+    public function checklists()
     {
-        return $this->hasMany(CardItem::class)->latest();
+        return $this->hasMany(Checklist::class);
     }
-
 
 
 

@@ -30,7 +30,7 @@ new class extends Component
                         <span class="italic text-xs text-red-500 -mt-1">Due date</span>
                     </div>
                 </div>
-            @elseif ($this->card->due_date->isTomorrow())
+            @elseif ($card->due_date->isTomorrow())
                 <div class="flex gap-1 items-start">
                     <x-icon name="clock" class="h-8 text-yellow-600" />
                     <div class="flex flex-col">
@@ -69,6 +69,7 @@ new class extends Component
 
                     <livewire:cards.dates.main :card="$this->card" />
 
+                    <livewire:cards.checklist.main :list="$this->list" :card="$this->card" :userRole="$userRole" />
 
                     <livewire:cards.content.description :card="$this->card" :list="$this->list" />
                 </div>
