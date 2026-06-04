@@ -60,6 +60,17 @@ if (window.authUserId) {
                     );
                 }
 
+                // ─── checklist new item ─────────────────────────────────────
+                if (notification.action === "checklistitem-newitem") {
+                    window.Livewire.dispatch("checklist-newitems");
+                    window.Livewire.dispatch("load-count");
+                }
+
+                // ─── checklist delete item ──────────────────────────────────
+                if (notification.action === "checklistitem-delete") {
+                    window.Livewire.dispatch("checklist-newitems");
+                }
+
                 // ─── Archive List ───────────────────────────────────────────
                 if (notification.toast_type === "archivelist") {
                     window.Livewire.dispatch("list-updated");

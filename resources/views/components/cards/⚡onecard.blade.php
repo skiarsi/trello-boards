@@ -51,6 +51,7 @@ new class extends Component
 
 
     <dialog id="modal-{{ $this->card->id }}" class="modal cursor-default">
+
         <div class="modal-box w-11/12 max-w-5xl" style="background:#fafafa; {{ $this->card->color ? 'border-top: 2rem solid '.$this->card->color.'' : ''  }}" >
             <div class="flex justify-between w-full border-b border-gray-200 overflow-hidden">
                 <h3 class="text-xl font-bold">{{ $this->card->title }}</h3>
