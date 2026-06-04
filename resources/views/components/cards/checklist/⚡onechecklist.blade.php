@@ -6,6 +6,7 @@ use App\Models\ChecklistItem;
 
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\checklist\deleteNotification;
+use App\Notifications\checklist\doneNotification;
 use Illuminate\Support\Facades\Auth;
 
 new class extends Component
@@ -30,6 +31,13 @@ new class extends Component
         $item->save();
 
         $this->dispatch('checklist-newitems');
+
+        Notification::send(
+            $this->list->activeUsers()->get(),
+            new doneNotification(
+                userId: Auth::id(),
+            )
+        );
     }
 
 
