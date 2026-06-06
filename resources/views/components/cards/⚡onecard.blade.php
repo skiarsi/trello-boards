@@ -11,7 +11,8 @@ new class extends Component
 
     #[On('card-label-updated-{card.id}')]
     #[On('card-date-updated-{card.id}')]
-    public function cardRefresh(){
+    #[On('card-updated')]
+    public function cardRefresh($listId = null){
         $this->card = $this->card->fresh();
     }
 

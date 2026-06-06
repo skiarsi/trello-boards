@@ -10,5 +10,8 @@ new class extends Component
 ?>
 
 <div>
-    <x-button label="Add Checklist" icon="o-list-bullet" />
+    <x-button
+        label="Add Checklist"
+        icon="o-list-bullet"
+        @click="$dispatch('create-new-checklist')" />
 </div>

@@ -19,7 +19,7 @@ new class extends Component
 <div
 
     class="flex flex-col gap-1 w-full py-4">
-        <div class="flex gap-2 w-full">
+        <div class="flex flex-wrap gap-2 w-full">
             <livewire:cards.content.addcontent />
 
             <livewire:cards.labels.addlable :list="$this->list" :card="$this->card" />
@@ -27,5 +27,7 @@ new class extends Component
             <livewire:cards.dates.add-date :list="$this->list" :card="$this->card" />
 
             <livewire:cards.checklist.addchecklist :list="$this->list" :card="$this->card" />
+
+            <livewire:cards.pickcolor :list="$this->list" :card="$this->card" />
         </div>
 </div>

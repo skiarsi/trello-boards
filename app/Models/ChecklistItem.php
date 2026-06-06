@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ChecklistItem extends Model
 {
-    protected $fillable = ['checklist_id','title','is_completed','completed_by_id','completed_at'];
+    protected $fillable = ['checklist_id','title','is_completed','completed_by_id','due_date','completed_at'];
 
     public function checklist()
     {
@@ -22,5 +22,6 @@ class ChecklistItem extends Model
 
     protected $casts = [
         'completed_at' => 'date',
+        'due_date' => 'date',
     ];
 }

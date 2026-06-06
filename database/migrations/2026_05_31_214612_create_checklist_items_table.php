@@ -18,6 +18,8 @@ return new class extends Migration
             $table->boolean('is_completed')->default(false);
 
             $table->foreignId('completed_by_id')->nullable()->constrained('users')->nullOnDelete();
+
+            $table->date('due_date')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();
         });

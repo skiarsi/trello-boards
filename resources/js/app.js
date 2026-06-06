@@ -16,6 +16,7 @@ if (window.authUserId) {
 
     window.Echo.private(`App.Models.User.${window.authUserId}`).notification(
         (notification) => {
+            console.log(notification);
             try {
                 // ─── Board notifications ───────────────────────────────────
                 if (notification.toast_type === "boardUpdate") {
@@ -53,11 +54,27 @@ if (window.authUserId) {
                     window.Livewire.dispatch("load-count");
                 }
 
+                // ─── Card color chage ───────────────────────────────────────
+                if (notification.action === "cards-updatecolor") {
+                    const listId =
+                        notification.listId || notification.data?.listId;
+
+                    window.Livewire.dispatch("card-updated", {
+                        listId: notification.listId,
+                    });
+                }
+
                 // ─── card label update ──────────────────────────────────────
                 if (notification.action === "card-label-updated") {
                     window.Livewire.dispatch(
                         `card-label-updated-${notification.card_id}`,
                     );
+                }
+
+                // ─── new checklist ──────────────────────────────────────────
+                if (notification.action === "new-checklist") {
+                    window.Livewire.dispatch("checklists-updated");
+                    window.Livewire.dispatch("load-count");
                 }
 
                 // ─── checklist new item ─────────────────────────────────────
@@ -69,6 +86,11 @@ if (window.authUserId) {
                 // ─── checklist delete item ──────────────────────────────────
                 if (notification.action === "checklistitem-delete") {
                     window.Livewire.dispatch("checklist-newitems");
+                }
+
+                // ─── checklist update title ─────────────────────────────────
+                if (notification.action === "checklistitem-updatetitle") {
+                    window.Livewire.dispatch("checklist-titleupdate");
                 }
 
                 // ─── Archive List ───────────────────────────────────────────

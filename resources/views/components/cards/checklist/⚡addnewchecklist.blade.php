@@ -11,15 +11,24 @@ new class extends Component
     public $list;
     public $itemtitle='';
     public $checklist;
+    public $duedate;
 
 
     public function creatItem(){
+
+        // make sure due date is empty or not
+        if (empty(trim($this->duedate))) {
+            $this->duedate = null;
+        }
+
         $validate = $this->validate([
-            'itemtitle' => 'required|min:4'
+            'itemtitle' => 'required|min:4',
+            'duedate'   => 'nullable|date'
         ]);
 
         $newitem = $this->checklist->items()->create([
             'title' => $validate['itemtitle'],
+            'due_date' => $validate['duedate'],
         ]);
 
         $this->itemtitle = '';
@@ -48,10 +57,11 @@ new class extends Component
 <div
     x-data="{
         open: false,
+        dateShow: false,
         clearandclose() {
             this.open = false;
-            {{-- $nextTick(()=> { $refs.input.value = '' }); --}}
             $wire.itemtitle = '';
+            $wire.duedate = '';
             $wire.resetFormValidation();
         },
         openform() {
@@ -63,29 +73,46 @@ new class extends Component
     <button
         x-show="!open"
         @click="openform()"
-        class="py-0.5 text-sm font-bold w-33 cursor-pointer shadow bg-white hover:bg-gray-100 text-black">Add new item</button>
+        class="py-0.5 text-sm font-bold w-33 cursor-pointer shadow bg-white hover:bg-gray-100 text-black">+ Add new item</button>
     <div
         x-show="open"
-        class="flex flex-col gap-1"
+        class="flex flex-col gap-1 w-11/12 ms-auto me-1 "
         @click.outside="clearandclose()">
         <input
             x-ref="input"
             type="text"
             wire:keydown.enter="creatItem"
             placeholder="Item title"
-            class="input input-sm outline-0 "
+            class="input input-sm outline-0 w-full"
             wire:model="itemtitle" />
         @error('itemtitle')
             <span class="text-red-600 italic text-sm">{{ $message }}</span>
         @enderror
 
-        <div class="flex gap-1 items-start">
+        <div
+            class="flex gap-1 items-start">
             <button
                 class="py-0 px-3 bg-sky-600 text-white text-sm cursor-pointer"
                 wire:click="creatItem">Create</button>
             <button
                 @click="clearandclose()"
                 class="py-0 px-3 text-black text-sm cursor-pointer">Cancel</button>
+
+            <span
+                x-show="!dateShow"
+                @click="dateShow = true"
+                class="text-sky-900 select-none cursor-pointer text-sm font-bold">Add due date</span>
+
+            <div
+                x-show="dateShow"
+                class="flex flex-col" >
+                <x-datetime
+                    class="input-xs"
+                    wire:model="duedate" />
+                @error('duedate')
+                    <span class="text-red-600 italic text-sm">{{ $message }}</span>
+                @enderror
+            </div>
         </div>
     </div>
 </div>

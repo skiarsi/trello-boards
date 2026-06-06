@@ -19,6 +19,7 @@ new class extends Component
 
 
     #[On('card-created')]
+    #[On('card-updated')]
     public function refreshCards($listId)
     {
         if($listId === $this->list->id){
@@ -53,7 +54,6 @@ new class extends Component
                     @if ($this->userRole === "owner")
                         <x-checkbox
                             wire:key="check-{{ $card->id }}"
-                            wire:model="item4"
                             x-model="isChecked"
                             class="self-start w-5 h-5 p-0.5 transition-all duration-300 hidden group-hover/card:block"
                             ::class="{ 'block!': isChecked }">
