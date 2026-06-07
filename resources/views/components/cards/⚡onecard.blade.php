@@ -77,7 +77,7 @@ new class extends Component
                 </div>
                 <div class="w-5/12 py-3 border-l border-gray-200">
                     <livewire:cards.comments.newcomment :card="$this->card" :list="$this->list" />
-                    {{-- <livewire:cards.comments.allcomments :card="$this->card" /> --}}
+                    <livewire:cards.comments.allcomments :card="$this->card" :list="$this->list" :userRole="$this->userRole" />
                 </div>
             </div>
         </div>

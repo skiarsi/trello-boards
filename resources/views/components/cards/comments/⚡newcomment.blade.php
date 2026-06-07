@@ -2,9 +2,10 @@
 
 use Livewire\Component;
 use App\Models\Card;
-use Illuminate\Support\Facades\Auth;
+
 use App\Notifications\comments\NewcommentNotification;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Auth;
 
 new class extends Component
 {

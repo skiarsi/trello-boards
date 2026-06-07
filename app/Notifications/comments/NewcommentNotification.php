@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Notifications\camments;
+namespace App\Notifications\comments;
 
-use App\Models\Card;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\BroadcastMessage;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use App\Models\Card;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 
-class newcomment extends Notification implements ShouldQueue
+class NewcommentNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -20,8 +19,7 @@ class newcomment extends Notification implements ShouldQueue
         public Card $card,
         public $message = '',
         public $sender = null
-    )
-    {}
+    ){}
 
     /**
      * Get the notification's delivery channels.
@@ -36,16 +34,6 @@ class newcomment extends Notification implements ShouldQueue
         return ['database','broadcast'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
-    // public function toMail(object $notifiable): MailMessage
-    // {
-    //     return (new MailMessage)
-    //         ->line('The introduction to the notification.')
-    //         ->action('Notification Action', url('/'))
-    //         ->line('Thank you for using our application!');
-    // }
 
     /**
      * Get the array representation of the notification.
@@ -58,11 +46,10 @@ class newcomment extends Notification implements ShouldQueue
             'toast_type'  => 'comment-new',
             'action'      => 'comment-new',
             'card_id'     => $this->card->id,
-            'card_body'   => $this->card->body,
-            'message'     => 'New comment from '.$this->sender->name.' for card `'.$this->card->body.'` added',
+            'comment_body'=> $this->card->title,
+            'message'     => 'New comment from '.ucfirst($this->sender->name).' added to card `'.$this->card->title.'`',
         ];
     }
-
 
     public function toBroadcast($notifiable): BroadcastMessage
     {
@@ -71,7 +58,7 @@ class newcomment extends Notification implements ShouldQueue
             'action'      => 'comment-new',
             'card_id'     => $this->card->id,
             'card_body'   => $this->card->body,
-            'message'     => 'New comment from '.$this->sender->name.' for card `'.$this->card->body.'` added',
+            'message'     => 'New comment from '.ucfirst($this->sender->name).' added to card `'.$this->card->title.'`',
         ]);
     }
 }

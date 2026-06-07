@@ -54,6 +54,11 @@ if (window.authUserId) {
                     window.Livewire.dispatch("load-count");
                 }
 
+                // delete comments
+                if (notification.action === "comment-delete") {
+                    window.Livewire.dispatch("comment_delete");
+                }
+
                 // ─── Card color chage ───────────────────────────────────────
                 if (notification.action === "cards-updatecolor") {
                     const listId =
