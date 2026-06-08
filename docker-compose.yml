@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+    # سرویس اصلی برنامه (RoadRunner)
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: laravel-livewire-app
+        container_name: livewire_app
+        restart: unless-stopped
+        volumes:
+            - ./.env:/var/www/.env
+            - ./database:/var/www/database
+            - ./storage:/var/www/storage
+        ports:
+            - "8000:8000" # پورت RoadRunner
+            - "8080:8080" # پورت Reverb
+        networks:
+            - app-network
+
+    # سرویس اجرای Queue
+    queue:
+        image: laravel-livewire-app
+        container_name: livewire_queue
+        restart: unless-stopped
+        volumes:
+            - ./.env:/var/www/.env
+            - ./database:/var/www/database
+            - ./storage:/var/www/storage
+        command: php artisan queue:work --tries=3
+        depends_on:
+            - app
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
